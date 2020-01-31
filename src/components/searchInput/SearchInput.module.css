@@ -1,0 +1,17 @@
+.SearchInput{
+    
+}
+.SearchInput > input{
+    width: 100%;
+    box-sizing: border-box;
+    height: 60px;
+    border: none;
+    border-bottom: 1px solid #D6D6D6;
+    text-align: center;
+    font-size: 17px;
+    color: #b9b9b9;
+    outline: none;
+    background: url("http://photos.work-alon.com/search.svg") no-repeat;
+    background-position: 10% center;
+    background-size: 25px;
+}

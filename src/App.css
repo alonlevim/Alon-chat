@@ -1,0 +1,33 @@
+html, body, #root, .App{
+  height: 100%;
+}
+
+div, input, textarea{
+  box-sizing: border-box;
+}
+
+p,h1,h2,h3,h4,h5,h6{
+  margin: 0;
+}
+
+body{
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+
+body, textarea, input{
+  font-family: 'Poppins', sans-serif;
+}
+
+.App{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 50px;
+}
+
+.customLink, .customLink a{
+  color: #ffffff;
+  margin-top: 20px;
+}

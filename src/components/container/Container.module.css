@@ -1,0 +1,19 @@
+.Container{
+    background-color: #ffffff;
+    width: 100%;
+    max-width: 1150px;
+    height: 100%;
+    box-shadow: 0 0 50px rgba(0, 0, 0, 0.3);
+    border-radius: 30px;
+    margin: auto;
+
+    display: flex;
+    overflow: hidden;
+    position: relative;
+}
+
+.Container .Side{
+    flex: 2;
+    overflow-y: auto;
+    z-index: 1;
+}

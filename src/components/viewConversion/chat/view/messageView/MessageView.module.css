@@ -1,0 +1,27 @@
+.MessageView{
+    width: 100%;
+}
+
+.MessageView.Me{
+    text-align: right;
+}
+
+.MessageView .BorderView{
+    border: 1px solid #D4D4D4;
+    display: inline-block;
+    padding: 20px 25px;
+    border-radius: 30px;
+    border-bottom-left-radius: 0;
+    background-color: #ffffff;
+    min-width: 100px;
+    text-align: center;
+}
+
+.MessageView.Me .BorderView{
+    border-bottom-left-radius: 30px;
+    border-bottom-right-radius: 0;
+}
+
+.MessageView .Text{
+    
+}

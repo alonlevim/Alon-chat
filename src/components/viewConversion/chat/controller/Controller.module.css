@@ -1,0 +1,36 @@
+.Controller{
+    width: 80%;
+    border-top: 1px solid #707070;
+    margin: 0 auto;
+    display: flex;
+}
+
+.Controller textarea{
+    width: 100%;
+    border: none;
+    resize: none;
+    outline: none;
+    padding: 10px 0;
+}
+
+.Controller button{
+    border: none;
+    border-radius: 20px;
+    flex-basis: 130px;
+    height: 40px;
+    margin-top: 10px;
+    background: #FF5F6D;
+    color: #ffffff;
+    cursor: pointer;
+    transition: 0.5s transform;
+    outline: none;
+}
+
+.Controller button:hover{
+    transform: scale(1.1, 1.1);
+}
+
+.Controller button:active{
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+    transform: scale(1, 1);
+}
