@@ -1,4 +1,4 @@
 .View{
-    height: 80%;
+    height: calc( 100% - 61px );
     padding: 30px;
 }

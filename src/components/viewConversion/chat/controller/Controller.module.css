@@ -11,6 +11,7 @@
     resize: none;
     outline: none;
     padding: 10px 0;
+    background-color: transparent;
 }
 
 .Controller button{
