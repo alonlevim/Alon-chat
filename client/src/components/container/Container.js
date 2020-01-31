@@ -11,10 +11,14 @@ const container = (props) => {
     return <div className={classes.Container}>
         <div className={classes.Side}>
             <SearchInput />
-            <Conversions />
+            <Conversions
+            users={props.users}
+            selectedIdUser={props.selectedIdUser}
+            updateSelectedUser={props.updateSelectedUser}
+            />
         </div>
         <ViewConversion />
-        {false && <Alert message="Lost connection..."/>}
+        {props.lostConnection && <Alert message="Lost connection..."/>}
     </div>
 };
 

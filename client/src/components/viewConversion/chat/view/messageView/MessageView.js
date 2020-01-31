@@ -2,8 +2,10 @@ import React from 'react';
 
 import classes from './MessageView.module.css';
 
-const allClasses = [classes.MessageView];
+
 const messageView = (props) => {
+    
+    const allClasses = [classes.MessageView];
     props.me && allClasses.push(classes.Me);
 
     return <div className={allClasses.join(" ")}>

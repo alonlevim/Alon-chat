@@ -55,6 +55,7 @@ element {
 .Conversions .Item .Details{
     display: flex;
     flex-direction: column;
+    flex-basis: 100%;
 }
 
 .Conversions .Item .Details .TopDetails{

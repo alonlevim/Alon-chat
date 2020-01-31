@@ -16,4 +16,5 @@
     flex: 2;
     overflow-y: auto;
     z-index: 1;
+    max-width: 370px;
 }
