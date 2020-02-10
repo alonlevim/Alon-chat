@@ -1,15 +1,22 @@
 import React from 'react';
 import Container from './components/container/Container';
-import socketIOClient from "socket.io-client";
+import * as event from './eventsString';
+import localStorage from './localStorage';
+import server from './socketEvents';
 
 import './App.css';
 
 class App extends React.PureComponent {
   state = {
-    load: false,
-    connectSocket: false,
-    users: [],
-    selectedIdUser: -1
+    loading: false,
+    connectSocketFirstTime: false,
+    members: [],
+    selectedIdMember: -1,
+    myId: -1,
+    conversion: [],
+    popupError: false,
+    messagePopupError: "",
+    search: ""
   };
 
   constructor(props) {
@@ -18,46 +25,172 @@ class App extends React.PureComponent {
     this.socket = null;
   }
 
-  componentDidMount() {
-    var curImg = new Image();
-    this.socket = socketIOClient("http://localhost:4000");
-    this.socket.on("connect", () => { this.onceGetAllDate(); });
-    this.socket.on("all data", (data) => { this.setState({ users: data.users }); });
-    this.socket.on("disconnect", () => { this.setState({ connectSocket: false }); });
+  async componentDidMount() {
+    // Check if have id in localStorage
+    await new Promise(this.checkLogin);
 
-    const thisClass = this;
+    // First time connect to sever
+    server.connect(this.connect);
 
+    // load image and show chat
+    this.loadImages(() => {
+      this.setState({ loading: false });
+    });
+  }
+
+  connect = () => {
+    const { myId } = this.state;
+    // Disable connect pop-up
+    let newState = { connectSocketFirstTime: true };
+
+    if (myId !== -1)
+      server.signIn(myId, (status, data) => {
+        if (status === "OK") {
+          // update data at state
+          this.updateData(data);
+        }
+        else {
+          // remove id from localStorage
+          localStorage.removeId();
+          // remove id from state
+          newState.myId = -1;
+          
+          this.setState(newState);
+          newState = null;
+        }
+      });
+    // Update state if is not login
+    newState && this.setState(newState);
+  }
+
+  getMemberSelected = () => {
+    const { members, selectedIdMember } = this.state;
+    const userSelected = members.filter( member => member._id === selectedIdMember );
+
+    return userSelected.length > 0 ? userSelected[0] : null;
+  }
+
+  registration = (name) => {
+    server.registration(name, (status, data) => {
+      if (status === "OK") {
+        // update id in local storage
+        const { myDetails } = data;
+        localStorage.setId(myDetails._id);
+
+        // update data at state
+        this.updateData(data);
+
+      }
+      else {
+        // show pop up - error
+        this.setState({
+          popupError: true,
+          messagePopupError: data
+        });
+      }
+    });
+  };
+
+  updateData = (data) => {
+    if (data == null)
+      return;
+
+    if (typeof data.myDetails !== "undefined" && typeof data.members !== "undefined") {
+      const { myDetails, members } = data;
+
+      // update data at state
+      this.setState({
+        myId: myDetails._id,
+        members,
+        popupError: false,
+        messagePopupError: ""
+      });
+    }
+    else {
+      this.setState({
+        members: data,
+        popupError: false,
+        messagePopupError: ""
+      });
+    }
+  }
+
+  loadImages = (callback) => {
+    const curImg = new Image();
     curImg.src = "http://photos.work-alon.com/3817.jpg";
     curImg.onload = function () {
       // do whatever here, add it to the background, append the image ect.
       document.body.style.backgroundImage = "url('http://photos.work-alon.com/3817.jpg')";
-      thisClass.setState({ load: false });
+
+      if (callback) {
+        callback();
+      }
     }
   }
 
-  onceGetAllDate = () => {
-    this.setState({ connectSocket: true });
-
-    this.socket.emit("all data");
-  };
-
-  updateSelectedUser = (id) => {
-    this.setState({ selectedIdUser: id });
+  checkLogin = (resolve, reject) => {
+    if (localStorage.haveId()) {
+      this.setState({ myId: localStorage.getId() }, () => {
+        resolve();
+      });
+    }
+    else {
+      resolve();
+    }
   }
 
+  getConversionWithMemberById = (id) => {
+    const { myId } = this.state;
+    
+    server.getConversionWithMember({
+      myId: myId,
+      withId: id
+    }, (status, data) => {
+      this.setState({conversion: data, selectedIdMember: id})
+    });
+  }
+
+  updateSelectedMember = (id) => {
+    const { myId } = this.state;
+    server.getConversionWithMember({
+      myId: myId,
+      withId: id
+    }, (status, data) => {
+
+    });
+  }
+
+  updateSearch = (string) => {
+    this.setState({search: string.trim()});
+  }
+
+  sendMessage = (value) => {
+    
+  }
+
+  listMembersAfterSearchFilter = () => this.state.members.filter( member => member.name.toLowerCase().includes(this.state.search.toLowerCase()) );
+
   render() {
-    const { load, connectSocket, users, selectedIdUser } = this.state;
+    const { loading, connectSocketFirstTime, selectedIdMember, conversion, myId, popupError, messagePopupError } = this.state;
     return (
       <div className="App">
-        {load ? <div> load </div> :
+        {loading ? <div> load </div> :
           <React.Fragment>
             <Container
-            users={users}
-            selectedIdUser={selectedIdUser}
-            updateSelectedUser={this.updateSelectedUser}
-            lostConnection={!connectSocket}
+              members={this.listMembersAfterSearchFilter()}
+              selectedIdMember={selectedIdMember}
+              updateSelectedMember={this.getConversionWithMemberById}
+              popupError={popupError}
+              messagePopupError={messagePopupError}
+              connectSocketFirstTime={!connectSocketFirstTime}
+              conversion={conversion}
+              myId={myId}
+              registration={this.registration}
+              sendMessage={this.sendMessage}
+              getMemberSelected={this.getMemberSelected}
+              updateSearch={this.updateSearch}
             />
-            
+
             <div className="customLink">
               <div>Icons made by <a href="https://www.flaticon.com/authors/mynamepong" title="mynamepong">mynamepong</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
               <div>Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>

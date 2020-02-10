@@ -1,0 +1,62 @@
+const Member = require("../schemas/member");
+
+module.exports = {
+    add: (data, id, callback) => {
+        if (data.name.trim() === "") {
+            // Empty name
+            callback("ERROR", "empty");
+            return;
+        }
+
+        const memberObject = {
+            socketId: id,
+            name: data.name,
+            date: new Date(),
+            online: true,
+            lastLogin: new Date(),
+            image: "http://localhost:4000/images/1.jpg"
+        };
+
+        const newMember = new Member(memberObject);
+
+        newMember.save().then((member) => {
+            // Add member id
+            memberObject._id = member._id;
+            callback("OK", memberObject);
+        }).catch(() => callback("ERROR", "can't save in DB"));
+    },
+
+    getById: async (id, socketId) => {
+        return Member.findById(id).then((member) => {
+            const memberObject = {
+                socketId,
+                _id: id,
+                name: member.name,
+                date: member.date,
+                online: member.online,
+                lastLogin: member.lastLogin,
+                image: member.image
+            };
+
+            return { status: "OK", member: memberObject };
+        }).catch(() => {
+            return { status: "FAIL" };
+        });
+    },
+
+    getAll: async () => {
+        return Member.find().then((members)=>members).catch((error)=>null);
+    },
+
+    disconnect: (id, callback) => {
+        const filter = { socketId: id };
+        const update = { online: false, lastLogin: new Date() };
+        Member.updateOne(filter, update).then(member => {
+            callback();
+        });
+    },
+
+    idIsValid: (id) => {
+        return Member.findById(id).then(() => true).catch(() => false);
+    }
+};

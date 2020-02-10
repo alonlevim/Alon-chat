@@ -5,7 +5,7 @@
     display: flex;
 }
 
-.Controller textarea{
+.Controller input{
     width: 100%;
     border: none;
     resize: none;
@@ -20,7 +20,7 @@
     flex-basis: 130px;
     height: 40px;
     margin-top: 10px;
-    background: #FF5F6D;
+    background: #FF5722;
     color: #ffffff;
     cursor: pointer;
     transition: 0.5s transform;

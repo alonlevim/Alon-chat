@@ -3,7 +3,14 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    height: 70%;
+}
+.WelcomeView:not(.RegistrationMode){
     height: 100%;
+    padding: 30px;
+}
+.WelcomeView.RegistrationMode{
+    height: 70%;
 }
 
 .WelcomeView .Title{
@@ -15,5 +22,5 @@
 }
 
 .WelcomeView .Robot{
-    width: 50%;
+    height: 70%;
 }

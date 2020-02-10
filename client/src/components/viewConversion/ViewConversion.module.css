@@ -2,6 +2,8 @@
     flex: 3;
     background-color: #ffffff;
     position: relative;
+    flex-direction: column;
+    display: flex;
 }
 
 .ViewConversion .Exit{

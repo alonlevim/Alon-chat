@@ -14,6 +14,11 @@
 }
 
 .Header .Online{
+    color: rgb(194, 194, 194);
+    text-transform: uppercase;
+    font-size: 15px;
+}
+.Header .Online.Active{
     color: #37BE3C;
     text-transform: uppercase;
     font-size: 15px;

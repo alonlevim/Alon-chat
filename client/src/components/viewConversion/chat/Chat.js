@@ -7,8 +7,11 @@ import classes from './Chat.module.css';
 
 const chat = (props) => {
     return <div className={classes.Chat}>
-        <View />
-        <Controller />
+        <View
+        conversion={props.conversion}
+        myId={props.myId}
+        />
+        <Controller sendMessage={props.sendMessage} />
     </div>
 };
 
