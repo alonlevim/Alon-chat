@@ -32,10 +32,15 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    width: calc( 100% - 100px );
+    width: 100%;
 }
 
+
 @media (max-width: 915px) {
+    .Header .Column{
+        width: calc( 100% - 160px );
+    }
+
     .Header .BackMobileButton {
         width: 30px;
         height: 30px;

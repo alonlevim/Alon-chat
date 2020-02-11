@@ -21,7 +21,6 @@ const viewConversion = (props) => {
                 />
             </React.Fragment>
         }
-        {!registrationMode && <img className={classes.Exit} src={"http://photos.work-alon.com/exit.svg"} />}
     </div>
 };
 

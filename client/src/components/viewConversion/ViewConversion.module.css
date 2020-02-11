@@ -5,17 +5,3 @@
     flex-direction: column;
     display: flex;
 }
-
-.ViewConversion .Exit {
-    position: absolute;
-    top: 20px;
-    right: 30px;
-    width: 40px;
-    opacity: 0.3;
-    cursor: pointer;
-}
-
-.ViewConversion .Exit:hover {
-    transform: scale(1.1, 1.1);
-    opacity: 0.6;
-}
