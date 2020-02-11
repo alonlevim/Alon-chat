@@ -18,20 +18,21 @@ const getFormatTime = (timeString) => {
     return `${hours}:${minutes} ${am_pm}`;
 };
 
-const members = (props) => {  
+const members = (props) => {
+    
     return <div className={classes.Members}>{props.members ? props.members.map((member) => {
-        const allClasses = [classes.Item];
+        const allClassesItem = [classes.Item];
 
         // is online
-        member.online && allClasses.push(classes.Online);
+        member.online && allClassesItem.push(classes.Online);
 
         // is active
-        member._id === props.selectedIdMember && allClasses.push(classes.Active);
+        member._id === props.selectedIdMember && allClassesItem.push(classes.Active);
 
         return (
         <div
         key={member._id}
-        className={allClasses.join(" ")}
+        className={allClassesItem.join(" ")}
         onClick={()=>{
             props.updateSelectedMember(member._id);
         }}

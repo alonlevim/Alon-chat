@@ -118,7 +118,6 @@ element {
 .Members .Item.Active, .Members .Item:hover{
     background: #A0B7C9;
     background: linear-gradient(-50deg, #A0B7C9 0%, #fff2c9 100%);
-    /* border-radius: 10px; */
 }
 
 .Members .Item.Active .Details .TopDetails .Name, .Members .Item:hover .Details .TopDetails .Name{

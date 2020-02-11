@@ -2,6 +2,8 @@ import React from 'react';
 import Members from '../members/Members';
 import ViewConversion from '../viewConversion/ViewConversion';
 import SearchInput from '../searchInput/SearchInput';
+import IntroductoryView from '../introductoryView/IntroductoryView';
+import Registration from '../registration/Registration';
 
 import classes from './Container.module.css';
 import Alert from '../alert/Alert';
@@ -20,29 +22,54 @@ const container = (props) => {
         sendMessage,
         connectSocketFirstTime,
         getMemberSelected,
-        updateSearch
+        updateSearch,
+        registrationMode,
+        introductionMode
     } = props;
-    
+
+    const allClassesSide = [classes.Side];
+
+    // introduction mode
+    !introductionMode && allClassesSide.push(classes.IntroductionMode);
+
     return <div className={classes.Container}>
-        {myId !== -1 ? <div className={classes.Side}>
-            <SearchInput updateSearch={updateSearch} />
-            <Members
-            members={members}
-            selectedIdMember={selectedIdMember}
-            updateSelectedMember={updateSelectedMember}
-            />
-        </div> : null}
-        
-        <ViewConversion
-        selectedIdMember={selectedIdMember}
-        conversion={conversion}
-        myId={myId}
-        registration={registration}
-        sendMessage={sendMessage}
-        getMemberSelected={getMemberSelected}
-        />
+        { registrationMode
+        ?
+        // Member need to registration 
+        <Registration registration={props.registration} />
+        :
+        // Member is signed in
+        <React.Fragment>
+            <div className={allClassesSide.join(" ")}>
+                <SearchInput updateSearch={updateSearch} />
+                <Members
+                    members={members}
+                    selectedIdMember={selectedIdMember}
+                    updateSelectedMember={updateSelectedMember}
+                    introductionMode={introductionMode}
+                />
+            </div>
+            {
+                introductionMode
+                ?
+                // Member didn't select conversion with another member
+                <IntroductoryView />
+                :
+                // Member selected conversion with another member
+                <ViewConversion
+                    selectedIdMember={selectedIdMember}
+                    conversion={conversion}
+                    myId={myId}
+                    registration={registration}
+                    sendMessage={sendMessage}
+                    getMemberSelected={getMemberSelected}
+                />
+            }
+            
+        </React.Fragment>
+         }
         {popupError && <Alert message={messagePopupError} />}
-        {connectSocketFirstTime && <Alert message="Connection..."/>}
+        {connectSocketFirstTime && <Alert message="Connection..." />}
     </div>
 };
 

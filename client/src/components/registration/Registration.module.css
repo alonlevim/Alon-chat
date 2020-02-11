@@ -1,9 +1,34 @@
-.Registration{
+.Registration {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
     padding: 30px;
+    justify-content: center;
+    width: 100%;
+}
+
+.Registration .Title {
+    margin-bottom: 30px;
+    font-weight: normal;
+    text-align: center;
+    height: 50px;
+}
+
+.Registration .Title span {
+    font-weight: bold;
+}
+
+.Registration .Robot {
+    height: calc( 100% - 50px - 170px - 10px );
+}
+
+.Registration .Registration{
+    padding-top: 30px;
     text-align: center;
 }
 
-.Registration .NameInput{
+.Registration .Registration .NameInput{
     width: 100%;
     height: 60px;
     border-radius: 30px;
@@ -14,7 +39,7 @@
     outline: none;
 }
 
-.Registration .LoginButton{
+.Registration .Registration .LoginButton{
     width: 130px;
     border: none;
     border-radius: 20px;
@@ -25,4 +50,23 @@
     cursor: pointer;
     transition: 0.5s transform;
     outline: none;
+}
+
+@media(max-width: 500px) {
+    .Registration .Title{
+        font-size: 25px;
+    }
+    .Registration{
+        justify-content: space-around;
+    }
+    .Registration .Robot{
+        height: initial;
+        width: 100%;
+    }
+    .Registration .Registration{
+        padding: 0;
+    }
+    .Registration .Registration .NameInput{
+        font-size: 14px;
+    }
 }

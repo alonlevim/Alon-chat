@@ -185,6 +185,8 @@ class App extends React.PureComponent {
               connectSocketFirstTime={!connectSocketFirstTime}
               conversion={conversion}
               myId={myId}
+              registrationMode={myId === -1}
+              introductionMode={myId !== -1 && selectedIdMember === -1}
               registration={this.registration}
               sendMessage={this.sendMessage}
               getMemberSelected={this.getMemberSelected}

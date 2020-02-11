@@ -1,4 +1,4 @@
-.ViewConversion{
+.ViewConversion {
     flex: 3;
     background-color: #ffffff;
     position: relative;
@@ -6,7 +6,7 @@
     display: flex;
 }
 
-.ViewConversion .Exit{
+.ViewConversion .Exit {
     position: absolute;
     top: 20px;
     right: 30px;
@@ -15,7 +15,7 @@
     cursor: pointer;
 }
 
-.ViewConversion .Exit:hover{
-    transform: scale(1.1,1.1);
+.ViewConversion .Exit:hover {
+    transform: scale(1.1, 1.1);
     opacity: 0.6;
 }

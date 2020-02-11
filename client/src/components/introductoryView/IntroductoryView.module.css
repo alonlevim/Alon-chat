@@ -1,0 +1,28 @@
+.IntroductoryView {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 70%;
+    flex: 3;
+}
+
+.IntroductoryView .Title {
+    margin-bottom: 30px;
+    font-weight: normal;
+    text-align: center;
+}
+
+.IntroductoryView .Title span {
+    font-weight: bold;
+}
+
+.IntroductoryView .Robot {
+    height: 70%;
+}
+
+@media (max-width: 915px) {
+    .IntroductoryView {
+        display: none;
+    }
+}
