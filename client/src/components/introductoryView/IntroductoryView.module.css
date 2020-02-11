@@ -3,7 +3,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 70%;
+    height: 100%;
     flex: 3;
 }
 
@@ -18,7 +18,7 @@
 }
 
 .IntroductoryView .Robot {
-    height: 70%;
+    height: 60%;
 }
 
 @media (max-width: 915px) {
