@@ -24,7 +24,8 @@ const container = (props) => {
         getMemberSelected,
         updateSearch,
         registrationMode,
-        introductionMode
+        introductionMode,
+        disableSelectedMember
     } = props;
 
     const allClassesSide = [classes.Side];
@@ -63,6 +64,7 @@ const container = (props) => {
                     registration={registration}
                     sendMessage={sendMessage}
                     getMemberSelected={getMemberSelected}
+                    disableSelectedMember={disableSelectedMember}
                 />
             }
             

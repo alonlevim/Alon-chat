@@ -10,7 +10,10 @@ const viewConversion = (props) => {
     return <div className={classes.ViewConversion}>
         {typeof props.conversion !== "undefined" && props.selectedIdMember !== -1 &&
             <React.Fragment>
-                <Header getMemberSelected={props.getMemberSelected} />
+                <Header
+                getMemberSelected={props.getMemberSelected}
+                disableSelectedMember={props.disableSelectedMember}
+                />
                 <Chat
                     conversion={props.conversion}
                     myId={props.myId}

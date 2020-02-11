@@ -168,6 +168,10 @@ class App extends React.PureComponent {
     
   }
 
+  disableSelectedMember = () => {
+    this.setState({selectedIdMember: -1})
+  }
+
   listMembersAfterSearchFilter = () => this.state.members.filter( member => member.name.toLowerCase().includes(this.state.search.toLowerCase()) );
 
   render() {
@@ -191,6 +195,7 @@ class App extends React.PureComponent {
               sendMessage={this.sendMessage}
               getMemberSelected={this.getMemberSelected}
               updateSearch={this.updateSearch}
+              disableSelectedMember={this.disableSelectedMember}
             />
 
             <div className="customLink">
