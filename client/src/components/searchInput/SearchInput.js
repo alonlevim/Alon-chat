@@ -10,6 +10,7 @@ const searchInput = (props) => {
         src={"http://photos.work-alon.com/exit.svg"}
         alt="exit"
         title="exit button"
+        onClick={props.logout}
         />
     </div>
 };

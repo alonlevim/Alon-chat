@@ -75,6 +75,20 @@ module.exports = (io) => {
             });
         });
 
+        socket.on(events.LOG_OUT, function(id, callback){
+            console.log(events.LOG_OUT);
+
+            Members.disconnect(socket.id, () => {
+                socket.leave(events.NAME_CHAT);
+
+                Members.getAllMembers((members) => {
+                    io.to(events.NAME_CHAT).emit(events.ALL_DATA, members);
+                });
+
+                callback && callback();
+            });
+        });
+
         socket.on(events.GET_CONVERSION_WITH_MEMBER, async function (data, callback) {
             if (data == null || callback == null)
                 return;

@@ -25,7 +25,8 @@ const container = (props) => {
         updateSearch,
         registrationMode,
         introductionMode,
-        disableSelectedMember
+        disableSelectedMember,
+        logout
     } = props;
 
     const allClassesSide = [classes.Side];
@@ -42,7 +43,10 @@ const container = (props) => {
         // Member is signed in
         <React.Fragment>
             <div className={allClassesSide.join(" ")}>
-                <SearchInput updateSearch={updateSearch} />
+                <SearchInput
+                updateSearch={updateSearch}
+                logout={logout}
+                />
                 <Members
                     members={members}
                     selectedIdMember={selectedIdMember}

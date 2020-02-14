@@ -6,3 +6,4 @@ export const DISCONNECT = "disconnect";
 export const GET_CONVERSION_WITH_MEMBER = "get conversion with member";
 export const ALL_MEMBERS = "all members";
 export const SEND_MESSAGE = "send message";
+export const LOG_OUT = "log out";

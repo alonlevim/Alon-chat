@@ -12,6 +12,10 @@ export default
         socket.on(events.CONNECTION, () => callback && callback());
     },
 
+    logout(id, callback) {
+        socket.emit(events.LOG_OUT, id, () => callback && callback());
+    },
+
 
     signIn(id, callback) {
         socket.emit(events.ALL_DATA, id, (status, data) => callback && callback(status, data));

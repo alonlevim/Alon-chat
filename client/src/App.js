@@ -172,6 +172,14 @@ class App extends React.PureComponent {
     this.setState({selectedIdMember: -1})
   }
 
+  logout = () => {
+    const { myId } = this.state;
+    server.logout(myId, ()=>{
+      localStorage.removeId();
+      this.setState({myId: -1});
+    });
+  }
+
   listMembersAfterSearchFilter = () => this.state.members.filter( member => member.name.toLowerCase().includes(this.state.search.toLowerCase()) );
 
   render() {
@@ -196,6 +204,7 @@ class App extends React.PureComponent {
               getMemberSelected={this.getMemberSelected}
               updateSearch={this.updateSearch}
               disableSelectedMember={this.disableSelectedMember}
+              logout={this.logout}
             />
 
             <div className="customLink">
