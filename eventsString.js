@@ -2,6 +2,7 @@ module.exports = {
     CONNECTION                  : "connection",
     REGISTRATION                : "registration",
     ALL_DATA                    : "all data",
+    SIGN_IN                     : "sign in",
     DISCONNECT                  : "disconnect",
     GET_CONVERSION_WITH_MEMBER  : "get conversion with member",
     ALL_MEMBERS                 : "all members",

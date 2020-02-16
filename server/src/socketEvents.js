@@ -6,13 +6,14 @@ module.exports = (io) => {
     io.on(events.CONNECTION, async function (socket) {
         console.log('a member connected');
 
-        socket.on(events.ALL_DATA, async function (id, callback) {
-            console.log(events.ALL_DATA, id);
+        socket.on(events.SIGN_IN, async function (id, callback) {
+            console.log(events.SIGN_IN, id);
 
             const valid = await Members.idIsValid(id);
             let status = "OK";
 
             if (valid) {
+                socket.join(events.NAME_CHAT);
                 await Members.addSocketId(id, socket.id);
                 const member = await Members.getById(id);
 
@@ -65,13 +66,14 @@ module.exports = (io) => {
 
         socket.on(events.DISCONNECT, function () {
             console.log(events.DISCONNECT);
+            // Leave group
+            socket.leave(events.NAME_CHAT);
 
             // Change member to offline
             Members.disconnect(socket.id, async() => {
                 // Broadcast to all chat room
                 const members = await Members.getAllMembers();
                 io.to(events.NAME_CHAT).emit(events.ALL_DATA, members);
-
             });
         });
 

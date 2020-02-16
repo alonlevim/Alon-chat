@@ -30,7 +30,7 @@ class App extends React.PureComponent {
     await new Promise(this.checkLogin);
 
     // First time connect to sever
-    server.connect(this.connect, this.getMessage);
+    server.connect(this.connect, this.getMessage, this.updateData);
 
     // load image and show chat
     this.loadImages(() => {

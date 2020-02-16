@@ -6,12 +6,14 @@ let socket = null;
 
 export default
 {
-    connect(connectionCallback, conversionsCallback) {
+    connect(connectionCallback, conversionsCallback, allDataCallback) {
         socket = socketIOClient(`http://localhost:${PORT}`);
 
         socket.on(events.CONNECTION, () => connectionCallback && connectionCallback());
 
-        socket.on(events.GET_MESSAGE, (conversions) => { console.log({conversions}); conversionsCallback(conversions)} );
+        socket.on(events.GET_MESSAGE, (conversions) => { conversionsCallback && conversionsCallback(conversions)} );
+
+        socket.on(events.ALL_DATA, (data) => { allDataCallback && allDataCallback(data)} );
     },
 
     logout(id, callback) {
@@ -20,7 +22,7 @@ export default
 
 
     signIn(id, callback) {
-        socket.emit(events.ALL_DATA, id, (status, data) => callback && callback(status, data));
+        socket.emit(events.SIGN_IN, id, (status, data) => callback && callback(status, data));
     },
 
     registration(name, callback) {
