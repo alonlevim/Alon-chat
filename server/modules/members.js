@@ -26,10 +26,11 @@ module.exports = {
         }).catch(() => callback("ERROR", "can't save in DB"));
     },
 
-    addSocketId: (idMember, idSocket) => {
+    addSocketIdAndOnlineMode: (idMember, idSocket) => {
         return Member.findById(idMember)
         .then( m => {
             m.socketId.push(idSocket);
+            m.online = true;
 
             m.save().catch(()=>{
                 console.log("can't append socket-id to member");

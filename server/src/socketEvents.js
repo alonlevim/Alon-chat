@@ -14,11 +14,15 @@ module.exports = (io) => {
 
             if (valid) {
                 socket.join(events.NAME_CHAT);
-                await Members.addSocketId(id, socket.id);
+                await Members.addSocketIdAndOnlineMode(id, socket.id);
                 const member = await Members.getById(id);
 
                 if (member.status === "OK") {
                     const members = await Members.getAllMembers();
+                    
+                    // Update all chat
+                    io.to(events.NAME_CHAT).emit(events.ALL_DATA, members);
+                    
                     callback(status, {
                         myDetails: member.member,
                         members

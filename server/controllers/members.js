@@ -5,8 +5,8 @@ module.exports = {
         members.add(data,id,callback);
     },
 
-    addSocketId: (idMember, idSocket) => {
-        return members.addSocketId(idMember, idSocket);
+    addSocketIdAndOnlineMode: (idMember, idSocket) => {
+        return members.addSocketIdAndOnlineMode(idMember, idSocket);
     },
 
     getAllMembers: async() => {
