@@ -30,7 +30,7 @@ class App extends React.PureComponent {
     await new Promise(this.checkLogin);
 
     // First time connect to sever
-    server.connect(this.connect);
+    server.connect(this.connect, this.getMessage);
 
     // load image and show chat
     this.loadImages(() => {
@@ -145,27 +145,51 @@ class App extends React.PureComponent {
     server.getConversionWithMember({
       myId: myId,
       withId: id
-    }, (status, data) => {
-      this.setState({conversion: data, selectedIdMember: id})
+    }, (status, data) => {   
+      if( status === "OK" ) {
+        if( typeof data.messages != "undefined" ) {
+          this.setState({conversion: data.messages, selectedIdMember: id});
+        }
+        else
+        {
+          this.setState({conversion: [], selectedIdMember: id});
+        }
+      }
     });
   }
 
-  updateSelectedMember = (id) => {
-    const { myId } = this.state;
-    server.getConversionWithMember({
-      myId: myId,
-      withId: id
-    }, (status, data) => {
-
-    });
+  getMessage = (data) => {
+    if( data != null && typeof data.status !== "undefined" && data.status === "OK" ) {
+      if( typeof data.result !== "undefined" && typeof data.result.messages !== "undefined" ) {
+        this.setState({ conversion: data.result.messages});
+      }
+    }
   }
 
   updateSearch = (string) => {
     this.setState({search: string.trim()});
   }
 
-  sendMessage = (value) => {
-    
+  sendMessage = (message) => {
+    const { myId, selectedIdMember } = this.state;
+    const data = {
+      message,
+      from: myId,
+      to: selectedIdMember
+    };
+
+    server.sendMessage(data, (status, newData)=>{
+      if( status === "OK" ) {
+        if( newData != null && typeof newData.messages !== "undefined" ) {
+          const { messages } = newData;
+          this.setState({ conversion: messages});
+        }
+      }
+      else {
+        // TODO: error alert
+      }
+      
+    })
   }
 
   disableSelectedMember = () => {

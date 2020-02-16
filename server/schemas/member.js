@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const MemberSchema = new Schema({
-    socketId: { type: String, required: true },
+    socketId: [{ type: String, required: true }],
     name: { type: String, required: true },
     date: { type: Date, required: true },
     online: { type: Boolean, required: true, default: false },

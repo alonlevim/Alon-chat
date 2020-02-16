@@ -6,10 +6,12 @@ let socket = null;
 
 export default
 {
-    connect(callback) {
+    connect(connectionCallback, conversionsCallback) {
         socket = socketIOClient(`http://localhost:${PORT}`);
 
-        socket.on(events.CONNECTION, () => callback && callback());
+        socket.on(events.CONNECTION, () => connectionCallback && connectionCallback());
+
+        socket.on(events.GET_MESSAGE, (conversions) => { console.log({conversions}); conversionsCallback(conversions)} );
     },
 
     logout(id, callback) {
@@ -25,7 +27,11 @@ export default
         socket.emit(events.REGISTRATION, {name}, (status, data) => callback && callback(status, data));
     },
 
-    getConversionWithMember(data, callback){
+    getConversionWithMember(data, callback) {
         socket.emit(events.GET_CONVERSION_WITH_MEMBER, data, (status, data) => callback && callback(status, data));
+    },
+
+    sendMessage(data, callback) {
+        socket.emit(events.SEND_MESSAGE, data, (status, data) => callback && callback(status, data));
     }
 };

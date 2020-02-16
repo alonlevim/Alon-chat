@@ -7,7 +7,7 @@ const view = (props) => {
   return <div className={classes.View}>
     {props.conversion.length ?
       props.conversion.map(mes => {
-        const me = mes.sentId === props.myId;
+        const me = mes.from === props.myId;
         return <MessageView
           key={mes.date}
           message={mes.content}

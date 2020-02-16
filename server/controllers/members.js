@@ -5,6 +5,10 @@ module.exports = {
         members.add(data,id,callback);
     },
 
+    addSocketId: (idMember, idSocket) => {
+        return members.addSocketId(idMember, idSocket);
+    },
+
     getAllMembers: async() => {
         return members.getAll();
     },
@@ -17,7 +21,7 @@ module.exports = {
         return members.idIsValid(id);
     },
 
-    getById: (id, socketId) => {
-        return members.getById(id, socketId);
+    getById: (id) => {
+        return members.getById(id);
     }
 };

@@ -9,7 +9,7 @@ module.exports = {
         }
 
         const memberObject = {
-            socketId: id,
+            socketId: [id],
             name: data.name,
             date: new Date(),
             online: true,
@@ -26,16 +26,29 @@ module.exports = {
         }).catch(() => callback("ERROR", "can't save in DB"));
     },
 
-    getById: async (id, socketId) => {
+    addSocketId: (idMember, idSocket) => {
+        return Member.findById(idMember)
+        .then( m => {
+            m.socketId.push(idSocket);
+
+            m.save().catch(()=>{
+                console.log("can't append socket-id to member");
+            });
+        }).catch(()=>{
+            console.log("can't find member to update socket-id");
+        });
+    },
+
+    getById: async (id) => {
         return Member.findById(id).then((member) => {
             const memberObject = {
-                socketId,
                 _id: id,
                 name: member.name,
                 date: member.date,
                 online: member.online,
                 lastLogin: member.lastLogin,
-                image: member.image
+                image: member.image,
+                socketId: member.socketId
             };
 
             return { status: "OK", member: memberObject };
