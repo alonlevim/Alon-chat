@@ -67,11 +67,10 @@ module.exports = (io) => {
             console.log(events.DISCONNECT);
 
             // Change member to offline
-            Members.disconnect(socket.id, () => {
+            Members.disconnect(socket.id, async() => {
                 // Broadcast to all chat room
-                Members.getAllMembers((members) => {
-                    io.to(events.NAME_CHAT).emit(events.ALL_DATA, members);
-                })
+                const members = await Members.getAllMembers();
+                io.to(events.NAME_CHAT).emit(events.ALL_DATA, members);
 
             });
         });
@@ -79,12 +78,11 @@ module.exports = (io) => {
         socket.on(events.LOG_OUT, function (id, callback) {
             console.log(events.LOG_OUT);
 
-            Members.disconnect(socket.id, () => {
+            Members.disconnect(socket.id, async() => {
                 socket.leave(events.NAME_CHAT);
 
-                Members.getAllMembers((members) => {
-                    io.to(events.NAME_CHAT).emit(events.ALL_DATA, members);
-                });
+                const members = await Members.getAllMembers();
+                io.to(events.NAME_CHAT).emit(events.ALL_DATA, members);
 
                 callback && callback();
             });

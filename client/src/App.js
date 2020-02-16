@@ -160,7 +160,7 @@ class App extends React.PureComponent {
 
   getMessage = (data) => {
     if( data != null && typeof data.status !== "undefined" && data.status === "OK" ) {
-      if( typeof data.result !== "undefined" && typeof data.result.messages !== "undefined" ) {
+      if( typeof data.result !== "undefined" && data.result && typeof data.result.messages !== "undefined" ) {
         this.setState({ conversion: data.result.messages});
       }
     }

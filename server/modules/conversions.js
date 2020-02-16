@@ -11,9 +11,8 @@ const createConversionBetweenTwoMembers = (id_1, id_2) => {
 };
 
 const getOrCreateIdOfConversionBetweenTwoMembers = (id_1, id_2) => {
-    return Conversion.findOne({between: {$in : [id_1,id_2] }})
+    return Conversion.findOne({between: [id_1,id_2].sort() })
     .then(async(data) => {
-        console.log({data, id_1, id_2}) 
         if( data != null ) {
             return {status: "OK", _id: data._id};
         }
