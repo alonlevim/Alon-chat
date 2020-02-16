@@ -101,14 +101,14 @@ class App extends React.PureComponent {
       // update data at state
       this.setState({
         myId: myDetails._id,
-        members,
+        members: members.filter(member => member._id != (myDetails._id || this.state.myId) ),
         popupError: false,
         messagePopupError: ""
       });
     }
     else {
       this.setState({
-        members: data,
+        members: data.filter(member => member._id != this.state.myId ),
         popupError: false,
         messagePopupError: ""
       });
