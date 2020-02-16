@@ -1,4 +1,5 @@
 .View{
     height: calc( 100% - 61px );
     padding: 30px;
+    overflow-y: auto;
 }
