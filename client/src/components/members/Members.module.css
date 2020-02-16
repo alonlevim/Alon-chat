@@ -26,6 +26,13 @@ element {
     border-radius: 10px;
 }
 
+.Members .ThereAreNoMembers{
+    font-size: 10px;
+    color: gray;
+    text-align: center;
+    padding-top: 20px;
+}
+
 .Members .Item{
     display: flex;
     align-items: flex-start;

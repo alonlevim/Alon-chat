@@ -20,7 +20,8 @@ const getFormatTime = (timeString) => {
 
 const members = (props) => {
     
-    return <div className={classes.Members}>{props.members ? props.members.map((member) => {
+    return <div className={classes.Members}>
+        {props.members.length ? props.members.map((member) => {
         const allClassesItem = [classes.Item];
 
         // is online
@@ -49,7 +50,7 @@ const members = (props) => {
             </div>
         </div>)
 
-    }) : null}</div>;
+    }) : <div className={classes.ThereAreNoMembers}>There are currently no members in the list</div>}</div>;
 };
 
 export default members;
