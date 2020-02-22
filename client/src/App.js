@@ -16,7 +16,8 @@ class App extends React.PureComponent {
     conversion: [],
     popupError: false,
     messagePopupError: "",
-    search: ""
+    search: "",
+    modeDevelopment: typeof process.env.NODE_ENV != "undefined" && process.env.NODE_ENV.trim() === "development"
   };
 
   constructor(props) {
@@ -26,6 +27,8 @@ class App extends React.PureComponent {
   }
 
   async componentDidMount() {
+    server.modeDevelopment(this.state.modeDevelopment);
+
     // Check if have id in localStorage
     await new Promise(this.checkLogin);
 

@@ -14,7 +14,7 @@ module.exports = {
             date: new Date(),
             online: true,
             lastLogin: new Date(),
-            image: "http://localhost:4000/images/1.jpg"
+            image: "/images/1.jpg"
         };
 
         const newMember = new Member(memberObject);

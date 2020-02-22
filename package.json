@@ -4,7 +4,10 @@
   "description": "responsive chat application real-time communication with Socket.io",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon --watch server/* server/src/app.js"
+    "start_win": "set NODE_ENV=production && node server/src/app.js",
+    "start_nix": "NODE_ENV=production node server/src/app.js",
+    "dev_win": "set NODE_ENV=development && nodemon --watch server/* server/src/app.js",
+    "dev_nix": "NODE_ENV=development && nodemon --watch server/* server/src/app.js"
   },
   "repository": {
     "type": "git",
@@ -14,6 +17,7 @@
   "license": "ISC",
   "nodemon": "^2.0.2",
   "dependencies": {
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "nodemon": "^2.0.2"
   },

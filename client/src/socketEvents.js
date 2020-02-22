@@ -1,13 +1,17 @@
 import socketIOClient from "socket.io-client";
 import * as events from './eventsString';
 
-const PORT = 4000;
+let PORT = 4000;
 let socket = null;
 
 export default
 {
+    modeDevelopment(modeDevelopmentFlag) {
+        PORT = !modeDevelopmentFlag ? null : PORT;
+    },
+
     connect(connectionCallback, conversionsCallback, allDataCallback) {
-        socket = socketIOClient(`http://localhost:${PORT}`);
+        socket = socketIOClient(PORT ? `http://localhost:${PORT}` : '/');
 
         socket.on(events.CONNECTION, () => connectionCallback && connectionCallback());
 
