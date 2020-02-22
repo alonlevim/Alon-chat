@@ -16,12 +16,13 @@
 .Header .Online{
     color: rgb(194, 194, 194);
     text-transform: uppercase;
-    font-size: 15px;
+    font-size: 12px;
+    letter-spacing: 0.8px;
+    margin-top: -7px;
 }
 .Header .Online.Active{
     color: #37BE3C;
     text-transform: uppercase;
-    font-size: 15px;
 }
 
 .Header .BackMobileButton{
@@ -32,13 +33,26 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: start;
+    padding-left: 20px;
     width: 100%;
+}
+
+.AvatarMember{
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    box-shadow: 0 0 6px rgba(0,0,0,0.2);
+    margin-left: 20px;
+    background-size: cover;
+    background-position: center;
+    padding: 17.5px;
 }
 
 
 @media (max-width: 915px) {
     .Header .Column{
-        width: calc( 100% - 160px );
+        width: calc( 100% - 160px - 50px - 55px );
     }
 
     .Header .BackMobileButton {
