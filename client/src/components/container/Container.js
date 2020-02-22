@@ -26,7 +26,8 @@ const container = (props) => {
         registrationMode,
         introductionMode,
         disableSelectedMember,
-        logout
+        logout,
+        loadingMembers
     } = props;
 
     const allClassesSide = [classes.Side];
@@ -52,6 +53,7 @@ const container = (props) => {
                     selectedIdMember={selectedIdMember}
                     updateSelectedMember={updateSelectedMember}
                     introductionMode={introductionMode}
+                    loadingMembers={loadingMembers}
                 />
             </div>
             {

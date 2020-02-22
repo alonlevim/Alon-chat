@@ -17,7 +17,8 @@ class App extends React.PureComponent {
     popupError: false,
     messagePopupError: "",
     search: "",
-    modeDevelopment: typeof process.env.NODE_ENV != "undefined" && process.env.NODE_ENV.trim() === "development"
+    modeDevelopment: typeof process.env.NODE_ENV != "undefined" && process.env.NODE_ENV.trim() === "development",
+    loadingMembers: true
   };
 
   constructor(props) {
@@ -106,14 +107,16 @@ class App extends React.PureComponent {
         myId: myDetails._id,
         members: members.filter(member => member._id != (myDetails._id || this.state.myId) ),
         popupError: false,
-        messagePopupError: ""
+        messagePopupError: "",
+        loadingMembers: false
       });
     }
     else {
       this.setState({
         members: data.filter(member => member._id != this.state.myId ),
         popupError: false,
-        messagePopupError: ""
+        messagePopupError: "",
+        loadingMembers: false
       });
     }
   }
@@ -210,7 +213,17 @@ class App extends React.PureComponent {
   listMembersAfterSearchFilter = () => this.state.members.filter( member => member.name.toLowerCase().includes(this.state.search.toLowerCase()) );
 
   render() {
-    const { loading, connectSocketFirstTime, selectedIdMember, conversion, myId, popupError, messagePopupError } = this.state;
+    const {
+      loading,
+      connectSocketFirstTime,
+      selectedIdMember,
+      conversion,
+      myId,
+      popupError,
+      messagePopupError,
+      loadingMembers
+    } = this.state;
+    
     return (
       <div className="App">
         {loading ? <div> load </div> :
@@ -232,6 +245,7 @@ class App extends React.PureComponent {
               updateSearch={this.updateSearch}
               disableSelectedMember={this.disableSelectedMember}
               logout={this.logout}
+              loadingMembers={loadingMembers}
             />
 
             <div className="customLink">

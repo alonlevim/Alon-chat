@@ -13,44 +13,50 @@ const getFormatTime = (timeString) => {
     const am_pm = hours >= 12 ? 'pm' : 'am';
     hours = hours > 12 ? hours - 12 : hours;
     // 2 digit number to minutes
-    minutes = minutes < 10 ? "0"+minutes : minutes;
-    
+    minutes = minutes < 10 ? "0" + minutes : minutes;
+
     return `${hours}:${minutes} ${am_pm}`;
 };
 
-const members = (props) => {
-    
+const members = ({ members, selectedIdMember, updateSelectedMember, unread, loadingMembers }) => {
+
     return <div className={classes.Members}>
-        {props.members.length ? props.members.map((member) => {
-        const allClassesItem = [classes.Item];
+        {members.length ? members.map((member) => {
+            const allClassesItem = [classes.Item];
 
-        // is online
-        member.online && allClassesItem.push(classes.Online);
+            // is online
+            member.online && allClassesItem.push(classes.Online);
 
-        // is active
-        member._id === props.selectedIdMember && allClassesItem.push(classes.Active);
+            // is active
+            member._id === selectedIdMember && allClassesItem.push(classes.Active);
 
-        return (
-        <div
-        key={member._id}
-        className={allClassesItem.join(" ")}
-        onClick={()=>{
-            props.updateSelectedMember(member._id);
-        }}
-        >
-            <div className={classes.Image} style={{ backgroundImage: `url(${member.image})` }}>
-                {typeof props.unread !== "undefined" && props.unread > 0 && <div className={classes.Unread}>{props.unread}</div> }
+            return (
+                <div
+                    key={member._id}
+                    className={allClassesItem.join(" ")}
+                    onClick={() => {
+                        updateSelectedMember(member._id);
+                    }}
+                >
+                    <div className={classes.Image} style={{ backgroundImage: `url(${member.image})` }}>
+                        {typeof unread !== "undefined" && unread > 0 && <div className={classes.Unread}>{unread}</div>}
+                    </div>
+                    <div className={classes.Details}>
+                        <div className={classes.TopDetails}>
+                            <h3 className={classes.Name}>{member.name}</h3>
+                            <p className={classes.Time}>{getFormatTime(member.date)}</p>
+                        </div>
+                        <p className={classes.ShortConversion}>{member.shortText}</p>
+                    </div>
+                </div>)
+
+        }) :
+            loadingMembers ? <div className={classes.Loading}>
+                <div className={classes.DoubleBounce_1}></div>
+                <div className={classes.DoubleBounce_2}></div>
             </div>
-            <div className={classes.Details}>
-                <div className={classes.TopDetails}>
-                    <h3 className={classes.Name}>{member.name}</h3>
-                    <p className={classes.Time}>{getFormatTime(member.date)}</p>
-                </div>
-                <p className={classes.ShortConversion}>{member.shortText}</p>
-            </div>
-        </div>)
-
-    }) : <div className={classes.ThereAreNoMembers}>There are currently no members in the list</div>}</div>;
+                :
+                <div className={classes.ThereAreNoMembers}>There are currently no members in the list</div>}</div>;
 };
 
 export default members;
