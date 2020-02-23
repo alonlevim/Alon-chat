@@ -8,7 +8,7 @@ const MemberSchema = new Schema({
     online: { type: Boolean, required: true, default: false },
     lastLogin: { type: Date, required: true, default: new Date() },
     image: { type: String },
-    conversion: [{ type: Schema.Types.ObjectId, ref: 'Conversion' }]
+    conversation: [{ type: Schema.Types.ObjectId, ref: 'Conversation' }]
 });
 
 module.exports = mongoose.model('Member', MemberSchema);

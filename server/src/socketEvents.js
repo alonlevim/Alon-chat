@@ -1,6 +1,6 @@
-const events = require("../../eventsString");
+const events = require("../eventsString");
 const Members = require("../controllers/members");
-const Conversions = require("../controllers/conversions");
+const Conversations = require("../controllers/conversations");
 
 module.exports = (io) => {
     io.on(events.CONNECTION, async function (socket) {
@@ -94,14 +94,14 @@ module.exports = (io) => {
             });
         });
 
-        socket.on(events.GET_CONVERSION_WITH_MEMBER, async function (data, callback) {
+        socket.on(events.GET_CONVERSATION_WITH_MEMBER, async function (data, callback) {
             if (data == null || callback == null)
                 return;
 
-            console.log(`${events.GET_CONVERSION_WITH_MEMBER} data.myId: ${data.myId} data.withId: ${data.withId}`);
-            const conversions = await Conversions.getConversions(data.myId, data.withId);
-            if (conversions.status === "OK") {
-                callback && callback("OK", conversions.result ? conversions.result : []);
+            console.log(`${events.GET_CONVERSATION_WITH_MEMBER} data.myId: ${data.myId} data.withId: ${data.withId}`);
+            const conversations = await Conversations.getConversations(data.myId, data.withId);
+            if (conversations.status === "OK") {
+                callback && callback("OK", conversations.result ? conversations.result : []);
             }
             else {
                 callback && callback("Fail", []);
@@ -123,16 +123,16 @@ module.exports = (io) => {
                 return;
 
             const { message, from, to } = data;
-            Conversions.push(message, from, to, async (status, error) => {
+            Conversations.push(message, from, to, async (status, error) => {
                 if (status === "OK") {
-                    const newConversion = await Conversions.getConversions(from, to);
+                    const newConversation = await Conversations.getConversations(from, to);
 
                     // Get socket id of getter message
                     const getterMember = await Members.getById(to);
 
-                    getterMember.member.socketId.length && getterMember.member.socketId.map(socketId => io.to(socketId).emit(events.GET_MESSAGE, newConversion));
+                    getterMember.member.socketId.length && getterMember.member.socketId.map(socketId => io.to(socketId).emit(events.GET_MESSAGE, newConversation));
 
-                    callback && callback(newConversion.status, newConversion.result);
+                    callback && callback(newConversation.status, newConversation.result);
                 }
                 else {
                     callback && callback("Fail", error);

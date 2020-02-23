@@ -2,19 +2,19 @@ import React from 'react';
 import Header from './header/Header';
 import Chat from './chat/Chat';
 
-import classes from './ViewConversion.module.css';
+import classes from './ViewConversation.module.css';
 
 
-const viewConversion = (props) => {
-    return <div className={classes.ViewConversion}>
-        {typeof props.conversion !== "undefined" && props.selectedIdMember !== -1 &&
+const viewConversation = (props) => {
+    return <div className={classes.ViewConversation}>
+        {typeof props.conversation !== "undefined" && props.selectedIdMember !== -1 &&
             <React.Fragment>
                 <Header
                 getMemberSelected={props.getMemberSelected}
                 disableSelectedMember={props.disableSelectedMember}
                 />
                 <Chat
-                    conversion={props.conversion}
+                    conversation={props.conversation}
                     myId={props.myId}
                     sendMessage={props.sendMessage}
                     getMemberSelected={props.getMemberSelected}
@@ -24,4 +24,4 @@ const viewConversion = (props) => {
     </div>
 };
 
-export default viewConversion;
+export default viewConversation;

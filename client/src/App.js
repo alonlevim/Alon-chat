@@ -13,7 +13,7 @@ class App extends React.PureComponent {
     members: [],
     selectedIdMember: -1,
     myId: -1,
-    conversion: [],
+    conversation: [],
     popupError: false,
     messagePopupError: "",
     search: "",
@@ -145,20 +145,20 @@ class App extends React.PureComponent {
     }
   }
 
-  getConversionWithMemberById = (id) => {
+  getConversationWithMemberById = (id) => {
     const { myId } = this.state;
     
-    server.getConversionWithMember({
+    server.getConversationWithMember({
       myId: myId,
       withId: id
     }, (status, data) => {   
       if( status === "OK" ) {
         if( typeof data.messages != "undefined" ) {
-          this.setState({conversion: data.messages, selectedIdMember: id});
+          this.setState({conversation: data.messages, selectedIdMember: id});
         }
         else
         {
-          this.setState({conversion: [], selectedIdMember: id});
+          this.setState({conversation: [], selectedIdMember: id});
         }
       }
     });
@@ -167,7 +167,7 @@ class App extends React.PureComponent {
   getMessage = (data) => {
     if( data != null && typeof data.status !== "undefined" && data.status === "OK" ) {
       if( typeof data.result !== "undefined" && data.result && typeof data.result.messages !== "undefined" ) {
-        this.setState({ conversion: data.result.messages});
+        this.setState({ conversation: data.result.messages});
       }
     }
   }
@@ -188,7 +188,7 @@ class App extends React.PureComponent {
       if( status === "OK" ) {
         if( newData != null && typeof newData.messages !== "undefined" ) {
           const { messages } = newData;
-          this.setState({ conversion: messages});
+          this.setState({ conversation: messages});
         }
       }
       else {
@@ -217,7 +217,7 @@ class App extends React.PureComponent {
       loading,
       connectSocketFirstTime,
       selectedIdMember,
-      conversion,
+      conversation,
       myId,
       popupError,
       messagePopupError,
@@ -231,11 +231,11 @@ class App extends React.PureComponent {
             <Container
               members={this.listMembersAfterSearchFilter()}
               selectedIdMember={selectedIdMember}
-              updateSelectedMember={this.getConversionWithMemberById}
+              updateSelectedMember={this.getConversationWithMemberById}
               popupError={popupError}
               messagePopupError={messagePopupError}
               connectSocketFirstTime={!connectSocketFirstTime}
-              conversion={conversion}
+              conversation={conversation}
               myId={myId}
               registrationMode={myId === -1}
               introductionMode={myId !== -1 && selectedIdMember === -1}

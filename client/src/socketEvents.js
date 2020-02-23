@@ -10,12 +10,12 @@ export default
         PORT = !modeDevelopmentFlag ? null : PORT;
     },
 
-    connect(connectionCallback, conversionsCallback, allDataCallback) {
+    connect(connectionCallback, conversationsCallback, allDataCallback) {
         socket = socketIOClient(PORT ? `http://localhost:${PORT}` : '/');
 
         socket.on(events.CONNECTION, () => connectionCallback && connectionCallback());
 
-        socket.on(events.GET_MESSAGE, (conversions) => { conversionsCallback && conversionsCallback(conversions)} );
+        socket.on(events.GET_MESSAGE, (conversations) => { conversationsCallback && conversationsCallback(conversations)} );
 
         socket.on(events.ALL_DATA, (data) => { allDataCallback && allDataCallback(data)} );
     },
@@ -33,8 +33,8 @@ export default
         socket.emit(events.REGISTRATION, {name}, (status, data) => callback && callback(status, data));
     },
 
-    getConversionWithMember(data, callback) {
-        socket.emit(events.GET_CONVERSION_WITH_MEMBER, data, (status, data) => callback && callback(status, data));
+    getConversationWithMember(data, callback) {
+        socket.emit(events.GET_CONVERSATION_WITH_MEMBER, data, (status, data) => callback && callback(status, data));
     },
 
     sendMessage(data, callback) {

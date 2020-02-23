@@ -11,9 +11,9 @@ class View extends React.Component {
   }
 
   scrollToBottom = () => {
-    if( !this.toScroll )
+    if (!this.toScroll)
       return;
-      
+
     const scrollHeight = this.messageList.scrollHeight;
     const height = this.messageList.clientHeight;
     const maxScrollTop = scrollHeight - height;
@@ -31,37 +31,35 @@ class View extends React.Component {
 
   onScroll = (e) => {
     const element = e.target
-    if (Math.floor(element.scrollHeight - element.scrollTop) <= element.clientHeight+40)
-    {
+    if (Math.floor(element.scrollHeight - element.scrollTop) <= element.clientHeight + 40) {
       // Bottom scroll
       this.toScroll = true;
     }
-    else
-    {
+    else {
       this.toScroll = false;
     }
   }
 
   render() {
-    const { conversion, myId, getMemberSelected } = this.props;
+    const { conversation, myId, getMemberSelected } = this.props;
     const member = getMemberSelected();
     return <div
       className={classes.View}
       ref={(el) => { this.messageList = el; }}
       onScroll={this.onScroll}
     >
-      {conversion.length ?
-        conversion.map(mes => {
+      {conversation.length ?
+        conversation.map(mes => {
           const me = mes.from === myId;
           return <MessageView
             key={mes.date}
             message={mes.content}
             me={me}
-            member={member}            
+            member={member}
           />
         })
         :
-        null
+        <div className={classes.EmptyConversation}>Start conversation with {member.name}</div>
       }
     </div>
   }

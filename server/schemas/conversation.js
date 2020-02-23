@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const ConversionSchema = new Schema({
+const ConversationSchema = new Schema({
     between: [{ type: Schema.Types.ObjectId, ref: 'Member' }],
     messages: [{
         from: { type: Schema.Types.ObjectId, ref: 'Member' },
@@ -12,4 +12,4 @@ const ConversionSchema = new Schema({
     }]
 });
 
-module.exports = mongoose.model('Conversion', ConversionSchema);
+module.exports = mongoose.model('Conversation', ConversationSchema);

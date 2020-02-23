@@ -10,7 +10,6 @@ const detectHebrew = (string) => {
 }
 
 const messageView = (props) => {
-
     const message = props.message.trim();
 
     const allClasses = [classes.MessageView];

@@ -115,7 +115,7 @@ element {
     color: var(--text-color);
 }
 
-.Members .Item .Details .ShortConversion{
+.Members .Item .Details .ShortConversation{
     height: 3em;
     text-overflow: ellipsis;
     overflow: hidden;
@@ -131,8 +131,8 @@ element {
 .Members .Item.Active .Details .TopDetails .Name, .Members .Item:hover .Details .TopDetails .Name{
     color: #2D465D;
 }
-.Members .Item.Active .Details .ShortConversion, .Members .Item.Active .Details .TopDetails .Time,
-.Members .Item:hover .Details .ShortConversion, .Members .Item:hover .Details .TopDetails .Time{
+.Members .Item.Active .Details .ShortConversation, .Members .Item.Active .Details .TopDetails .Time,
+.Members .Item:hover .Details .ShortConversation, .Members .Item:hover .Details .TopDetails .Time{
     color: #F1F1E2;
     text-shadow: 0 3px 6px rgba(0,0,0,0.34);
 }

@@ -46,7 +46,7 @@ const members = ({ members, selectedIdMember, updateSelectedMember, unread, load
                             <h3 className={classes.Name}>{member.name}</h3>
                             <p className={classes.Time}>{getFormatTime(member.date)}</p>
                         </div>
-                        <p className={classes.ShortConversion}>{member.shortText}</p>
+                        <p className={classes.ShortConversation}>{member.shortText}</p>
                     </div>
                 </div>)
 

@@ -4,6 +4,12 @@
     overflow-y: auto;
 }
 
+.View .EmptyConversation{
+    text-align: center;
+    font-size: 13px;
+    color: #757575;
+}
+
 .View::-webkit-scrollbar {
     width: 1em;  
 }

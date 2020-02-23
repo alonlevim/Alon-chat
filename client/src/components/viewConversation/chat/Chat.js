@@ -8,7 +8,7 @@ import classes from './Chat.module.css';
 const chat = (props) => {
     return <div className={classes.Chat}>
         <View
-        conversion={props.conversion}
+        conversation={props.conversation}
         myId={props.myId}
         getMemberSelected={props.getMemberSelected}
         />

@@ -1,6 +1,6 @@
 import React from 'react';
 import Members from '../members/Members';
-import ViewConversion from '../viewConversion/ViewConversion';
+import ViewConversation from '../viewConversation/ViewConversation';
 import SearchInput from '../searchInput/SearchInput';
 import IntroductoryView from '../introductoryView/IntroductoryView';
 import Registration from '../registration/Registration';
@@ -14,7 +14,7 @@ const container = (props) => {
         members,
         selectedIdMember,
         updateSelectedMember,
-        conversion,
+        conversation,
         messagePopupError,
         popupError,
         myId,
@@ -59,13 +59,13 @@ const container = (props) => {
             {
                 introductionMode
                 ?
-                // Member didn't select conversion with another member
+                // Member didn't select conversation with another member
                 <IntroductoryView />
                 :
-                // Member selected conversion with another member
-                <ViewConversion
+                // Member selected conversation with another member
+                <ViewConversation
                     selectedIdMember={selectedIdMember}
-                    conversion={conversion}
+                    conversation={conversation}
                     myId={myId}
                     registration={registration}
                     sendMessage={sendMessage}
