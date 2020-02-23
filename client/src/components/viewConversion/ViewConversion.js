@@ -6,7 +6,6 @@ import classes from './ViewConversion.module.css';
 
 
 const viewConversion = (props) => {
-    const registrationMode = props.myId === -1;
     return <div className={classes.ViewConversion}>
         {typeof props.conversion !== "undefined" && props.selectedIdMember !== -1 &&
             <React.Fragment>
@@ -18,6 +17,7 @@ const viewConversion = (props) => {
                     conversion={props.conversion}
                     myId={props.myId}
                     sendMessage={props.sendMessage}
+                    getMemberSelected={props.getMemberSelected}
                 />
             </React.Fragment>
         }

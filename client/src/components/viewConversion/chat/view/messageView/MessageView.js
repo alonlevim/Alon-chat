@@ -19,8 +19,9 @@ const messageView = (props) => {
     // Detect hebrew
     detectHebrew(message) && allClasses.push(classes.Rtl);
 
-    return props.message.trim() !== "" ?
+    return message !== "" ?
         <div className={allClasses.join(" ")}>
+            <div className={classes.Avatar} style={{ backgroundImage: `url(${props.member.image})` }}></div>
             <div className={classes.BorderView}>
                 <Twemoji className={classes.Text} text={message} />
             </div>

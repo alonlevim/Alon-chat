@@ -10,6 +10,7 @@ const chat = (props) => {
         <View
         conversion={props.conversion}
         myId={props.myId}
+        getMemberSelected={props.getMemberSelected}
         />
         <Controller sendMessage={props.sendMessage} />
     </div>

@@ -43,7 +43,8 @@ class View extends React.Component {
   }
 
   render() {
-    const { conversion, myId } = this.props;
+    const { conversion, myId, getMemberSelected } = this.props;
+    const member = getMemberSelected();
     return <div
       className={classes.View}
       ref={(el) => { this.messageList = el; }}
@@ -56,6 +57,7 @@ class View extends React.Component {
             key={mes.date}
             message={mes.content}
             me={me}
+            member={member}            
           />
         })
         :
