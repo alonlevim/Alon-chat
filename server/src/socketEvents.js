@@ -18,7 +18,7 @@ module.exports = (io) => {
                 const member = await Members.getById(id);
 
                 if (member.status === "OK") {
-                    const members = await Members.getAllMembers();
+                    const members = await Members.getAllMembersWithMyConversations(id);
                     
                     // Update all chat
                     io.to(events.NAME_CHAT).emit(events.ALL_DATA, members);

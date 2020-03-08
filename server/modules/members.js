@@ -1,4 +1,5 @@
 const Member = require("../schemas/member");
+const conversation = require("./conversations");
 
 module.exports = {
     add: (data, id, callback) => {
@@ -60,6 +61,19 @@ module.exports = {
 
     getAll: async () => {
         return Member.find().then((members)=>members).catch((error)=>null);
+    },
+
+    getAllMembersWithMyConversations: async (id) => {
+        const results = await Member.find().then((members)=>members.filter(member => member._id != id)).catch((error)=>null);
+        
+        const newResults = results.map(async member => {
+            const newMember = {...member._doc};
+            newMember.conversation = await conversation.getConversations(id, member._id).then(data => data != null && typeof data.result !== "undefined" && data.result != null && typeof data.result.messages !== "undefined" ? data.result.messages : []);
+            
+            return newMember;
+        });
+
+        return await Promise.all(newResults);
     },
 
     disconnect: (id, callback) => {

@@ -1,9 +1,13 @@
 const Conversation = require("../schemas/conversation");
 const mongoose = require('mongoose');
 
+const sortIdsToArray = (id_1, id_2) => {
+    return [id_1, id_2].sort();
+};
+
 const createConversationBetweenTwoMembers = (id_1, id_2) => {
     const newConversation = new Conversation({
-        between: [id_1, id_2].sort(),
+        between: sortIdsToArray(id_1, id_2),
         messages: []
     });
     
@@ -11,7 +15,7 @@ const createConversationBetweenTwoMembers = (id_1, id_2) => {
 };
 
 const getOrCreateIdOfConversationBetweenTwoMembers = (id_1, id_2) => {
-    return Conversation.findOne({between: [id_1,id_2].sort() })
+    return Conversation.findOne({between: sortIdsToArray(id_1,id_2) })
     .then(async(data) => {
         if( data != null ) {
             return {status: "OK", _id: data._id};
@@ -58,7 +62,7 @@ module.exports = {
     },
 
     getConversations: (id_1, id_2) => {
-        const ids = [mongoose.Types.ObjectId(id_1), mongoose.Types.ObjectId(id_2)].sort();
+        const ids = sortIdsToArray(mongoose.Types.ObjectId(id_1), mongoose.Types.ObjectId(id_2));
 
         return Conversation.findOne({between: ids}).then((data) => {return { status: "OK", result: data }}).catch((error) => {return { status: "FAIL" }});
     }

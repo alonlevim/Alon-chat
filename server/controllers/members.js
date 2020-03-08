@@ -13,6 +13,10 @@ module.exports = {
         return members.getAll();
     },
 
+    getAllMembersWithMyConversations: async(myId) => {
+        return members.getAllMembersWithMyConversations(myId);
+    },
+
     disconnect: (id, callback) => {
         members.disconnect(id, callback);
     },

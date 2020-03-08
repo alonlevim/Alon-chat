@@ -166,6 +166,13 @@ class App extends React.PureComponent {
 
   getMessage = (data) => {
     if( data != null && typeof data.status !== "undefined" && data.status === "OK" ) {
+      const { myId } = this.state;
+      const messageDoesNotSaw = data.result.messages.filter(message => {
+        return message.to === myId && !message.saw
+      });
+      data.result.doesNotSaw = messageDoesNotSaw.length;
+      
+
       if( typeof data.result !== "undefined" && data.result && typeof data.result.messages !== "undefined" ) {
         this.setState({ conversation: data.result.messages});
       }
