@@ -9,3 +9,6 @@ export const ALL_MEMBERS = "all members";
 export const SEND_MESSAGE = "send message";
 export const GET_MESSAGE = "get message";
 export const LOG_OUT = "log out";
+export const READ_MESSAGE = "read message";
+export const MEMBER_OFFLINE = "member offline";
+export const MEMBER_ONLINE = "member online";

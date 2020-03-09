@@ -24,8 +24,8 @@ module.exports = (io) => {
                     io.to(events.NAME_CHAT).emit(events.ALL_DATA, members);
                     
                     callback(status, {
-                        myDetails: member.member,
-                        members
+                        myDetails : member.member,
+                        members : members.filter(member => member._id != id)
                     });
                 }
                 else {

@@ -64,7 +64,7 @@ module.exports = {
     },
 
     getAllMembersWithMyConversations: async (id) => {
-        const results = await Member.find().then((members)=>members.filter(member => member._id != id)).catch((error)=>null);
+        const results = await Member.find();
         
         const newResults = results.map(async member => {
             const newMember = {...member._doc};

@@ -10,14 +10,19 @@ export default
         PORT = !modeDevelopmentFlag ? null : PORT;
     },
 
-    connect(connectionCallback, conversationsCallback, allDataCallback) {
+    connect(callbacks) {
+        const {connect, getMessage, updateData, memberOnline, memberOffline} = callbacks;
         socket = socketIOClient(PORT ? `http://localhost:${PORT}` : '/');
 
-        socket.on(events.CONNECTION, () => connectionCallback && connectionCallback());
+        socket.on(events.CONNECTION, () => connect && connect());
 
-        socket.on(events.GET_MESSAGE, (conversations) => { conversationsCallback && conversationsCallback(conversations)} );
+        socket.on(events.GET_MESSAGE, (conversations) => { getMessage && getMessage(conversations)} );
 
-        socket.on(events.ALL_DATA, (data) => { allDataCallback && allDataCallback(data)} );
+        socket.on(events.ALL_DATA, (data) => { updateData && updateData(data)} );
+
+        socket.on(events.MEMBER_ONLINE, (data) => { memberOnline && memberOnline(data)} );
+        
+        socket.on(events.MEMBER_OFFLINE, (data) => { memberOffline && memberOffline(data)} );
     },
 
     logout(id, callback) {

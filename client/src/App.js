@@ -5,6 +5,7 @@ import localStorage from './localStorage';
 import server from './socketEvents';
 
 import './App.css';
+import members from './components/members/Members';
 
 class App extends React.PureComponent {
   state = {
@@ -34,7 +35,14 @@ class App extends React.PureComponent {
     await new Promise(this.checkLogin);
 
     // First time connect to sever
-    server.connect(this.connect, this.getMessage, this.updateData);
+    const callbacksToResponse = {
+      memberOnline: this.memberOnline,
+      connect: this.connect,
+      getMessage: this.getMessage,
+      updateData: this.updateData,
+      memberOffline: this.memberOffline
+    };
+    server.connect(callbacksToResponse);
 
     // load image and show chat
     this.loadImages(() => {
@@ -58,7 +66,7 @@ class App extends React.PureComponent {
           localStorage.removeId();
           // remove id from state
           newState.myId = -1;
-          
+
           this.setState(newState);
           newState = null;
         }
@@ -69,7 +77,7 @@ class App extends React.PureComponent {
 
   getMemberSelected = () => {
     const { members, selectedIdMember } = this.state;
-    const userSelected = members.filter( member => member._id === selectedIdMember );
+    const userSelected = members.filter(member => member._id === selectedIdMember);
 
     return userSelected.length > 0 ? userSelected[0] : null;
   }
@@ -105,7 +113,7 @@ class App extends React.PureComponent {
       // update data at state
       this.setState({
         myId: myDetails._id,
-        members: members.filter(member => member._id != (myDetails._id || this.state.myId) ),
+        members: members.filter(member => member._id != (myDetails._id || this.state.myId)),
         popupError: false,
         messagePopupError: "",
         loadingMembers: false
@@ -113,7 +121,7 @@ class App extends React.PureComponent {
     }
     else {
       this.setState({
-        members: data.filter(member => member._id != this.state.myId ),
+        members: data.filter(member => member._id != this.state.myId),
         popupError: false,
         messagePopupError: "",
         loadingMembers: false
@@ -145,42 +153,78 @@ class App extends React.PureComponent {
     }
   }
 
-  getConversationWithMemberById = (id) => {
-    const { myId } = this.state;
-    
-    server.getConversationWithMember({
-      myId: myId,
-      withId: id
-    }, (status, data) => {   
-      if( status === "OK" ) {
-        if( typeof data.messages != "undefined" ) {
-          this.setState({conversation: data.messages, selectedIdMember: id});
-        }
-        else
-        {
-          this.setState({conversation: [], selectedIdMember: id});
-        }
+  findMemberById = (id) => {
+    const result = this.state.members.filter(member => member._id === id);
+    return result.length > 0 ? result[0] : null;
+  }
+
+  getIndexOfMemberById = (id) => {
+    let indexById = -1;
+
+    this.state.members.forEach((item, index, arr) => {
+      if (item._id === id) {
+        indexById = index;
       }
+
     });
+
+    return indexById;
+  };
+
+  getConversationWithMemberById = (id) => {
+    const member = this.findMemberById(id);
+
+    member != null && this.setState({
+      conversation: member.conversation,
+      selectedIdMember: id
+    });
+  };
+
+  memberOnline = (id) => {
+    this.memberOnlineOrOffline(true, id);
+  };
+
+  memberOffline = (id) => {
+    this.memberOnlineOrOffline(false, id);
+  }
+
+  memberOnlineOrOffline = (online, id) => {
+    const index = this.getIndexOfMemberById(id);
+
+    // Not fount member
+    if (index === -1) {
+      return;
+    }
+
+    const { members } = this.state;
+    // Copy array
+    const newMembers = [...members];
+    // update item
+    newMembers[index].online = online;
+    // Update state
+    this.setState({ member: newMembers });
   }
 
   getMessage = (data) => {
-    if( data != null && typeof data.status !== "undefined" && data.status === "OK" ) {
+    if (data != null && typeof data.status !== "undefined" && data.status === "OK") {
       const { myId } = this.state;
       const messageDoesNotSaw = data.result.messages.filter(message => {
         return message.to === myId && !message.saw
       });
-      data.result.doesNotSaw = messageDoesNotSaw.length;
-      
 
-      if( typeof data.result !== "undefined" && data.result && typeof data.result.messages !== "undefined" ) {
-        this.setState({ conversation: data.result.messages});
+      data.result.doesNotSaw = messageDoesNotSaw.length;
+
+
+      if (typeof data.result !== "undefined" && data.result && typeof data.result.messages !== "undefined") {
+        const memberId = data.result.between.filter(id => { console.log(id, myId); return id != myId })[0];
+        
+        this.setState({ conversation: data.result.messages });
       }
     }
   }
 
   updateSearch = (string) => {
-    this.setState({search: string.trim()});
+    this.setState({ search: string.trim() });
   }
 
   sendMessage = (message) => {
@@ -191,33 +235,33 @@ class App extends React.PureComponent {
       to: selectedIdMember
     };
 
-    server.sendMessage(data, (status, newData)=>{
-      if( status === "OK" ) {
-        if( newData != null && typeof newData.messages !== "undefined" ) {
+    server.sendMessage(data, (status, newData) => {
+      if (status === "OK") {
+        if (newData != null && typeof newData.messages !== "undefined") {
           const { messages } = newData;
-          this.setState({ conversation: messages});
+          this.setState({ conversation: messages });
         }
       }
       else {
         // TODO: error alert
       }
-      
+
     })
   }
 
   disableSelectedMember = () => {
-    this.setState({selectedIdMember: -1})
+    this.setState({ selectedIdMember: -1 })
   }
 
   logout = () => {
     const { myId } = this.state;
-    server.logout(myId, ()=>{
+    server.logout(myId, () => {
       localStorage.removeId();
-      this.setState({myId: -1});
+      this.setState({ myId: -1 });
     });
   }
 
-  listMembersAfterSearchFilter = () => this.state.members.filter( member => member.name.toLowerCase().includes(this.state.search.toLowerCase()) );
+  listMembersAfterSearchFilter = () => this.state.members.filter(member => member.name.toLowerCase().includes(this.state.search.toLowerCase()));
 
   render() {
     const {
@@ -230,7 +274,7 @@ class App extends React.PureComponent {
       messagePopupError,
       loadingMembers
     } = this.state;
-    
+
     return (
       <div className="App">
         {loading ? <div> load </div> :

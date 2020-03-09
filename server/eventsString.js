@@ -9,5 +9,8 @@ module.exports = {
     SEND_MESSAGE                 : "send message",
     GET_MESSAGE                  : "get message",
     LOG_OUT                      : "log out",
-    NAME_CHAT                    : "chat"
+    NAME_CHAT                    : "chat",
+    READ_MESSAGE                 : "read message",
+    MEMBER_OFFLINE               : "member offline",
+    MEMBER_ONLINE                : "member online"
 };
