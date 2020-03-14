@@ -19,13 +19,13 @@ module.exports = (io) => {
 
                 if (member.status === "OK") {
                     const members = await Members.getAllMembersWithMyConversations(id);
-                    
+
                     // Update all chat
                     io.to(events.NAME_CHAT).emit(events.ALL_DATA, members);
-                    
+
                     callback(status, {
-                        myDetails : member.member,
-                        members : members.filter(member => member._id != id)
+                        myDetails: member.member,
+                        members: members.filter(member => member._id != id)
                     });
                 }
                 else {
@@ -62,8 +62,8 @@ module.exports = (io) => {
                             members
                         });
 
-                    // Sent to all members new data
-                    io.to(events.NAME_CHAT).emit(events.ALL_DATA, members);
+                    // Send to all chat that member is online
+                    io.to(events.NAME_CHAT).emit(events.MEMBER_ONLINE, { member: newMember._id });
                 }
             });
         });
@@ -74,17 +74,17 @@ module.exports = (io) => {
             socket.leave(events.NAME_CHAT);
 
             // Change member to offline
-            Members.disconnect(socket.id, async() => {
-                // Broadcast to all chat room
-                const members = await Members.getAllMembers();
-                io.to(events.NAME_CHAT).emit(events.ALL_DATA, members);
+            Members.disconnect(socket.id, async (idMember) => {
+                
+                // Send to all chat that member is offline
+                io.to(events.NAME_CHAT).emit(events.MEMBER_OFFLINE, { member: idMember });
             });
         });
 
         socket.on(events.LOG_OUT, function (id, callback) {
             console.log(events.LOG_OUT);
 
-            Members.disconnect(socket.id, async() => {
+            Members.disconnect(socket.id, async () => {
                 socket.leave(events.NAME_CHAT);
 
                 const members = await Members.getAllMembers();

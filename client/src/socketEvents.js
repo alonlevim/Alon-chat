@@ -20,9 +20,9 @@ export default
 
         socket.on(events.ALL_DATA, (data) => { updateData && updateData(data)} );
 
-        socket.on(events.MEMBER_ONLINE, (data) => { memberOnline && memberOnline(data)} );
+        socket.on(events.MEMBER_ONLINE, (member) => { memberOnline && memberOnline(member)} );
         
-        socket.on(events.MEMBER_OFFLINE, (data) => { memberOffline && memberOffline(data)} );
+        socket.on(events.MEMBER_OFFLINE, (member) => { memberOffline && memberOffline(member)} );
     },
 
     logout(id, callback) {

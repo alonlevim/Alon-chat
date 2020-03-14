@@ -78,9 +78,13 @@ module.exports = {
 
     disconnect: (id, callback) => {
         const filter = { socketId: id };
-        const update = { online: false, lastLogin: new Date() };
-        Member.updateOne(filter, update).then(member => {
-            callback();
+        Member.findOne(filter).then(member => {
+            member.online = false;
+            member.lastLogin = new Date();
+
+            member.save();
+
+            callback(member._id);
         });
     },
 

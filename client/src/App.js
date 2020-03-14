@@ -180,12 +180,12 @@ class App extends React.PureComponent {
     });
   };
 
-  memberOnline = (id) => {
-    this.memberOnlineOrOffline(true, id);
+  memberOnline = (data) => {
+    this.memberOnlineOrOffline(true, data.member);
   };
 
-  memberOffline = (id) => {
-    this.memberOnlineOrOffline(false, id);
+  memberOffline = (data) => {
+    this.memberOnlineOrOffline(false, data.member);
   }
 
   memberOnlineOrOffline = (online, id) => {
