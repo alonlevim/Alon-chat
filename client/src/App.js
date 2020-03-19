@@ -40,7 +40,8 @@ class App extends React.PureComponent {
       connect: this.connect,
       getMessage: this.getMessage,
       updateData: this.updateData,
-      memberOffline: this.memberOffline
+      memberOffline: this.memberOffline,
+      addMember: this.addMember
     };
     server.connect(callbacksToResponse);
 
@@ -180,12 +181,31 @@ class App extends React.PureComponent {
     });
   };
 
-  memberOnline = (data) => {
-    this.memberOnlineOrOffline(true, data.member);
+  addMember = (member) => {
+    const { members } = this.state;
+    const newMembers = [...members];
+    // Add
+    newMembers.push(member);
+    // Update state
+    this.setState({ members: newMembers });
   };
 
-  memberOffline = (data) => {
-    this.memberOnlineOrOffline(false, data.member);
+  removeMember = (member) => {
+    const { members } = this.state;
+    // Find by id
+    this.getIndexOfMemberById(member._id);
+    // Remove from array
+    const newMembers = members.splice(member, 1);
+    // Update state
+    this.setState({ members: newMembers });
+  };
+
+  memberOnline = (id) => {
+    this.memberOnlineOrOffline(true, id);
+  };
+
+  memberOffline = (id) => {
+    this.memberOnlineOrOffline(false, id);
   }
 
   memberOnlineOrOffline = (online, id) => {
@@ -220,15 +240,14 @@ class App extends React.PureComponent {
       else if (typeof data.from !== "undefined") {
 
         const indexMember = this.getIndexOfMemberById(data.from);
-        if( indexMember !== -1 )
-        {
-          const {members} = this.state;
+        if (indexMember !== -1) {
+          const { members } = this.state;
           const newMembers = [...members];
           newMembers[indexMember].conversation.push(data);
 
-          this.setState({members: newMembers});
+          this.setState({ members: newMembers });
         }
-        else{
+        else {
           console.log("Can't found member");
         }
       }

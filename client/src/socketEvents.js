@@ -11,7 +11,7 @@ export default
     },
 
     connect(callbacks) {
-        const {connect, getMessage, updateData, memberOnline, memberOffline} = callbacks;
+        const {connect, getMessage, updateData, memberOnline, memberOffline, addMember} = callbacks;
         socket = socketIOClient(PORT ? `http://localhost:${PORT}` : '/');
 
         socket.on(events.CONNECTION, () => connect && connect());
@@ -20,9 +20,11 @@ export default
 
         socket.on(events.ALL_DATA, (data) => { updateData && updateData(data)} );
 
-        socket.on(events.MEMBER_ONLINE, (member) => { memberOnline && memberOnline(member)} );
+        socket.on(events.MEMBER_ONLINE, (idMember) => { memberOnline && memberOnline(idMember)} );
         
-        socket.on(events.MEMBER_OFFLINE, (member) => { memberOffline && memberOffline(member)} );
+        socket.on(events.MEMBER_OFFLINE, (idMember) => { memberOffline && memberOffline(idMember)} );
+
+        socket.on(events.ADDED_MEMBER, (member) => { addMember && addMember(member)} );
     },
 
     logout(id, callback) {

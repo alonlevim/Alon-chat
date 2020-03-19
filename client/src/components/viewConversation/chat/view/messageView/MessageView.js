@@ -3,7 +3,7 @@ import { Twemoji } from 'react-emoji-render';
 
 import classes from './MessageView.module.css';
 
-const detectHebrew = (string) => {
+const detectHebrewDirection = (string) => {
     var position = string.search(/[\u0590-\u05FF]/);
 
     return position >= 0;
@@ -16,7 +16,7 @@ const messageView = (props) => {
     props.me && allClasses.push(classes.Me);
     
     // Detect hebrew
-    detectHebrew(message) && allClasses.push(classes.Rtl);
+    detectHebrewDirection(message) && allClasses.push(classes.Rtl);
 
     return message !== "" ?
         <div className={allClasses.join(" ")}>

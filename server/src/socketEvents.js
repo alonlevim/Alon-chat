@@ -21,8 +21,7 @@ module.exports = (io) => {
                     const members = await Members.getAllMembersWithMyConversations(id);
 
                     // Update all chat
-                    //TODO: change the event name it
-                    io.to(events.NAME_CHAT).emit(events.ALL_DATA, members);
+                    io.to(events.NAME_CHAT).emit(events.MEMBER_ONLINE, id);
 
                     callback(status, {
                         myDetails: member.member,
@@ -56,15 +55,16 @@ module.exports = (io) => {
                     // Send back to client all data
                     const members = await Members.getAllMembers();
 
+                    // Send to all chat that member is online
+                    newMember.conversation = [];
+                    io.to(events.NAME_CHAT).emit(events.ADDED_MEMBER, newMember);
+
                     callback(
                         status,
                         {
                             myDetails: newMember,
                             members
                         });
-
-                    // Send to all chat that member is online
-                    io.to(events.NAME_CHAT).emit(events.MEMBER_ONLINE, { member: newMember._id });
                 }
             });
         });
@@ -78,7 +78,7 @@ module.exports = (io) => {
             Members.disconnect(socket.id, async (idMember) => {
 
                 // Send to all chat that member is offline
-                io.to(events.NAME_CHAT).emit(events.MEMBER_OFFLINE, { member: idMember });
+                io.to(events.NAME_CHAT).emit(events.MEMBER_OFFLINE, idMember._id);
             });
         });
 

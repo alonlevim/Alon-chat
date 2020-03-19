@@ -12,5 +12,7 @@ module.exports = {
     NAME_CHAT                    : "chat",
     READ_MESSAGE                 : "read message",
     MEMBER_OFFLINE               : "member offline",
-    MEMBER_ONLINE                : "member online"
+    MEMBER_ONLINE                : "member online",
+    ADDED_MEMBER                 : "added member",
+    REMOVED_MEMBER               : "removed member"
 };

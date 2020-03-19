@@ -12,3 +12,5 @@ export const LOG_OUT = "log out";
 export const READ_MESSAGE = "read message";
 export const MEMBER_OFFLINE = "member offline";
 export const MEMBER_ONLINE = "member online";
+export const ADDED_MEMBER = "added member";
+export const REMOVED_MEMBER = "removed member";
