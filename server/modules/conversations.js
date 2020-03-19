@@ -50,14 +50,17 @@ module.exports = {
             };
 
             conversation.messages.push(messageObject);
-            conversation.save().then(()=>{
-                callback && callback("OK");
+            conversation.save().then((list)=>{
+                // Last added
+                const item = list.messages[list.messages.length -1];
+                
+                callback && callback("OK", null, item);
             }).catch(()=>{
-                callback && callback("Fail", "can't save conversation");
+                callback && callback("Fail", "can't save conversation", null);
             });
         }
         else{
-            callback && callback("Fail", conversationBetweenTwoMembersDB.error);
+            callback && callback("Fail", conversationBetweenTwoMembersDB.error, null);
         }
     },
 

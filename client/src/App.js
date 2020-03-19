@@ -206,19 +206,31 @@ class App extends React.PureComponent {
   }
 
   getMessage = (data) => {
-    if (data != null && typeof data.status !== "undefined" && data.status === "OK") {
-      const { myId } = this.state;
-      const messageDoesNotSaw = data.result.messages.filter(message => {
-        return message.to === myId && !message.saw
-      });
+    if (data != null && typeof data.content !== "undefined") {
+      const { selectedIdMember } = this.state;
+      // When conversation with member
+      if (typeof data.from !== "undefined" && data.from === selectedIdMember) {
+        const { conversation } = this.state;
+        const newConversation = [...conversation];
+        newConversation.push(data);
 
-      data.result.doesNotSaw = messageDoesNotSaw.length;
+        this.setState({ conversation: newConversation });
+      }
+      // When conversation is not with the member
+      else if (typeof data.from !== "undefined") {
 
+        const indexMember = this.getIndexOfMemberById(data.from);
+        if( indexMember !== -1 )
+        {
+          const {members} = this.state;
+          const newMembers = [...members];
+          newMembers[indexMember].conversation.push(data);
 
-      if (typeof data.result !== "undefined" && data.result && typeof data.result.messages !== "undefined") {
-        const memberId = data.result.between.filter(id => { console.log(id, myId); return id != myId })[0];
-        
-        this.setState({ conversation: data.result.messages });
+          this.setState({members: newMembers});
+        }
+        else{
+          console.log("Can't found member");
+        }
       }
     }
   }
@@ -235,15 +247,18 @@ class App extends React.PureComponent {
       to: selectedIdMember
     };
 
-    server.sendMessage(data, (status, newData) => {
+    server.sendMessage(data, (status, error, data) => {
       if (status === "OK") {
-        if (newData != null && typeof newData.messages !== "undefined") {
-          const { messages } = newData;
-          this.setState({ conversation: messages });
+        if (data != null && typeof data.content !== "undefined") {
+          const { conversation } = this.state;
+          const newConversation = [...conversation];
+          newConversation.push(data);
+
+          this.setState({ conversation: newConversation });
         }
       }
       else {
-        // TODO: error alert
+        console.log(error);
       }
 
     })

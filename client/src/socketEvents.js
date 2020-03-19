@@ -16,7 +16,7 @@ export default
 
         socket.on(events.CONNECTION, () => connect && connect());
 
-        socket.on(events.GET_MESSAGE, (conversations) => { getMessage && getMessage(conversations)} );
+        socket.on(events.GET_MESSAGE, (data) => { getMessage && getMessage(data)} );
 
         socket.on(events.ALL_DATA, (data) => { updateData && updateData(data)} );
 
@@ -43,6 +43,6 @@ export default
     },
 
     sendMessage(data, callback) {
-        socket.emit(events.SEND_MESSAGE, data, (status, data) => callback && callback(status, data));
+        socket.emit(events.SEND_MESSAGE, data, (status, error, data) => callback && callback(status, error, data));
     }
 };

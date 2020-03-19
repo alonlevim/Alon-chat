@@ -21,6 +21,7 @@ module.exports = (io) => {
                     const members = await Members.getAllMembersWithMyConversations(id);
 
                     // Update all chat
+                    //TODO: change the event name it
                     io.to(events.NAME_CHAT).emit(events.ALL_DATA, members);
 
                     callback(status, {
@@ -75,7 +76,7 @@ module.exports = (io) => {
 
             // Change member to offline
             Members.disconnect(socket.id, async (idMember) => {
-                
+
                 // Send to all chat that member is offline
                 io.to(events.NAME_CHAT).emit(events.MEMBER_OFFLINE, { member: idMember });
             });
@@ -122,20 +123,23 @@ module.exports = (io) => {
             )
                 return;
 
+            console.log(`${events.SEND_MESSAGE} from: ${data.from} to: ${data.to} message: ${data.message}`);
+
             const { message, from, to } = data;
-            Conversations.push(message, from, to, async (status, error) => {
+            Conversations.push(message, from, to, async (status, error, dataAfterSaved) => {
                 if (status === "OK") {
-                    const newConversation = await Conversations.getConversations(from, to);
+                    //const newConversation = await Conversations.getConversations(from, to);
 
-                    // Get socket id of getter message
-                    const getterMember = await Members.getById(to);
+                    // Get socket id of receiving message
+                    const receivingMessage = await Members.getById(to);
 
-                    getterMember.member.socketId.length && getterMember.member.socketId.map(socketId => io.to(socketId).emit(events.GET_MESSAGE, newConversation));
+                    // Send to receiving member the message
+                    receivingMessage.member.socketId.length && receivingMessage.member.socketId.map(socketId => io.to(socketId).emit(events.GET_MESSAGE, dataAfterSaved));
 
-                    callback && callback(newConversation.status, newConversation.result);
+                    callback && callback(status, null, dataAfterSaved);
                 }
                 else {
-                    callback && callback("Fail", error);
+                    callback && callback(status, error);
                 }
             });
         });
