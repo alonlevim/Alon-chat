@@ -10,17 +10,20 @@ const detectHebrewDirection = (string) => {
 }
 
 const messageView = (props) => {
-    const message = props.message.trim();
+    const { member, me } = props;
+    let { message } = props;
+
+    message = message.trim();
 
     const allClasses = [classes.MessageView];
-    props.me && allClasses.push(classes.Me);
-    
+    me && allClasses.push(classes.Me);
+
     // Detect hebrew
     detectHebrewDirection(message) && allClasses.push(classes.Rtl);
 
     return message !== "" ?
         <div className={allClasses.join(" ")}>
-            <div className={classes.Avatar} style={{ backgroundImage: `url(${props.member.image})` }}></div>
+            <div className={classes.Avatar} style={{ backgroundImage: `url(${member.image})` }}></div>
             <div className={classes.BorderView}>
                 <Twemoji className={classes.Text} text={message} />
             </div>

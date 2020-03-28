@@ -18,23 +18,11 @@ const getFormatTime = (timeString) => {
     return `${hours}:${minutes} ${am_pm}`;
 };
 
-const unread = (conversation) => {
-    if( conversation.length > 0 )
-    {
-        const count = conversation.filter(message => !message.saw).length;
-
-        return count;
-    }
-    
-    return 0;
-};
-
 const members = ({ members, selectedIdMember, updateSelectedMember, loadingMembers }) => {
 
     return <div className={classes.Members}>
         {members.length ? members.map((member) => {
             const allClassesItem = [classes.Item];
-            const unreadConversation = unread(member.conversation);
 
             // is online
             member.online && allClassesItem.push(classes.Online);
@@ -51,7 +39,7 @@ const members = ({ members, selectedIdMember, updateSelectedMember, loadingMembe
                     }}
                 >
                     <div className={classes.Image} style={{ backgroundImage: `url(${member.image})` }}>
-                        { unreadConversation > 0 && <div className={classes.Unread}>{unreadConversation}</div> }
+                        { member.unread > 0 && <div className={classes.Unread}>{member.unread}</div> }
                     </div>
                     <div className={classes.Details}>
                         <div className={classes.TopDetails}>

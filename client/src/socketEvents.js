@@ -46,5 +46,9 @@ export default
 
     sendMessage(data, callback) {
         socket.emit(events.SEND_MESSAGE, data, (status, error, data) => callback && callback(status, error, data));
+    },
+
+    sawMessage(data, callback) {
+        socket.emit(events.READ_MESSAGE, data, (status, error) => callback && callback(status, error));
     }
 };

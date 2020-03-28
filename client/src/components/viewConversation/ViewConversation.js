@@ -18,6 +18,9 @@ const viewConversation = (props) => {
                     myId={props.myId}
                     sendMessage={props.sendMessage}
                     getMemberSelected={props.getMemberSelected}
+                    readMessage={props.readMessage}
+                    toScroll={props.toScroll}
+                    conversationWithoutState={props.conversationWithoutState}
                 />
             </React.Fragment>
         }

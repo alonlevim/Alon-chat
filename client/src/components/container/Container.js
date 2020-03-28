@@ -27,7 +27,10 @@ const container = (props) => {
         introductionMode,
         disableSelectedMember,
         logout,
-        loadingMembers
+        loadingMembers,
+        readMessage,
+        toScroll,
+        conversationWithoutState
     } = props;
 
     const allClassesSide = [classes.Side];
@@ -71,6 +74,9 @@ const container = (props) => {
                     sendMessage={sendMessage}
                     getMemberSelected={getMemberSelected}
                     disableSelectedMember={disableSelectedMember}
+                    readMessage={readMessage}
+                    toScroll={toScroll}
+                    conversationWithoutState={conversationWithoutState}
                 />
             }
             

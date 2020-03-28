@@ -68,5 +68,23 @@ module.exports = {
         const ids = sortIdsToArray(mongoose.Types.ObjectId(id_1), mongoose.Types.ObjectId(id_2));
 
         return Conversation.findOne({between: ids}).then((data) => {return { status: "OK", result: data }}).catch((error) => {return { status: "FAIL" }});
+    },
+
+    readMessage: (id, from, to) => {
+        // Order ids
+        const ids = sortIdsToArray(mongoose.Types.ObjectId(from), mongoose.Types.ObjectId(to));
+        // find and update message as saw
+        return Conversation.findOne({between: ids}).then((conversation)=>{
+            const newMessage = [...conversation.messages];
+            // Update message as saw
+            newMessage.forEach((item)=>{
+                if( item._id.toString() === id )
+                    item.saw = true;
+            });
+            // reassign new message list
+            conversation.messages = newMessage;
+            // save
+            conversation.save();
+        });
     }
 };

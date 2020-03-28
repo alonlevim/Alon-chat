@@ -5,7 +5,6 @@ import localStorage from './localStorage';
 import server from './socketEvents';
 
 import './App.css';
-import members from './components/members/Members';
 
 class App extends React.PureComponent {
   state = {
@@ -26,6 +25,8 @@ class App extends React.PureComponent {
     super(props);
 
     this.socket = null;
+    this.toScroll = true;
+    this.conversation = [];
   }
 
   async componentDidMount() {
@@ -108,25 +109,35 @@ class App extends React.PureComponent {
     if (data == null)
       return;
 
-    if (typeof data.myDetails !== "undefined" && typeof data.members !== "undefined") {
-      const { myDetails, members } = data;
-
-      // update data at state
-      this.setState({
-        myId: myDetails._id,
-        members: members.filter(member => member._id != (myDetails._id || this.state.myId)),
-        popupError: false,
-        messagePopupError: "",
-        loadingMembers: false
+    if (typeof data.members !== "undefined") {
+      const newMembers = [];
+      // Unread message each member
+      data.members.forEach((member, index) => {
+        const unread = this.unreadMessageUpdate({ conversation: member.conversation, indexMember: index, myId: data.myDetails._id || this.state.myId }, false);
+        const newMember = { ...member, unread };
+        newMembers.push(newMember);
       });
-    }
-    else {
-      this.setState({
-        members: data.filter(member => member._id != this.state.myId),
-        popupError: false,
-        messagePopupError: "",
-        loadingMembers: false
-      });
+      if (typeof data.myDetails !== "undefined") {
+        const { myDetails, members } = data;
+        
+        // update data at state
+        this.setState({
+          myId: myDetails._id,
+          members: newMembers.filter(member => member._id != (myDetails._id || this.state.myId)),
+          popupError: false,
+          messagePopupError: "",
+          loadingMembers: false
+        });
+      }
+      else {
+        // update data at state
+        this.setState({
+          members: newMembers.filter(member => member._id != this.state.myId),
+          popupError: false,
+          messagePopupError: "",
+          loadingMembers: false
+        });
+      }
     }
   }
 
@@ -175,8 +186,17 @@ class App extends React.PureComponent {
   getConversationWithMemberById = (id) => {
     const member = this.findMemberById(id);
 
+    this.conversation = [...member.conversation];
     member != null && this.setState({
-      conversation: member.conversation,
+      conversation: member.conversation.map(con => {
+        return {
+          _id: con._id,
+          from: con.from,
+          to: con.to,
+          content: con.content,
+          date: con.date
+        }
+      }),
       selectedIdMember: id
     });
   };
@@ -272,6 +292,7 @@ class App extends React.PureComponent {
           const { conversation } = this.state;
           const newConversation = [...conversation];
           newConversation.push(data);
+          this.conversation.push(data);
 
           this.setState({ conversation: newConversation });
         }
@@ -282,6 +303,57 @@ class App extends React.PureComponent {
 
     })
   }
+
+  readMessage = (data) => {
+    const { idMessage, idMember } = data;
+    const indexMember = this.getIndexOfMemberById(idMember);
+
+    if (indexMember === -1)
+      return;
+
+    const member = this.state.members[indexMember];
+    const listMessage = member.conversation.map((item, index) => item._id === idMessage ? index : false).filter(item=> item !== false);
+    const indexMessage = listMessage.length > 0 ? listMessage[0] : false;
+
+    if (indexMessage === false)
+      return;
+
+    const message = member.conversation[indexMessage];
+    // When not saw the message
+    if (!message.saw) {
+      // Data to server
+      const data = {
+        from: message.from,
+        to: message.to,
+        id: message._id
+      };
+
+      // Send to server
+      server.sawMessage(data, () => {
+        // Update read message in state
+        const { conversation } = this;
+        const index = conversation.findIndex(mess => mess._id == data.id);
+        conversation[index].saw = true;
+
+        this.unreadMessageUpdate({ conversation, indexMember }, true);
+      });
+    }
+  }
+
+  unreadMessageUpdate = ({ conversation, indexMember, myId = this.state.myId }, updateState) => {
+    const count = conversation.filter(item => !item.saw && (item.from !== "undefined" && myId != "undefined" && item.from !== myId)).length
+
+    if (updateState === true) {
+      const { members } = this.state;
+      const newMembers = [...members];
+      if (indexMember > -1 && typeof newMembers[indexMember] != "undefined") {
+        newMembers[indexMember].unread = count;
+        this.setState({ members: newMembers });
+      }
+    }
+
+    return count;
+  };
 
   disableSelectedMember = () => {
     this.setState({ selectedIdMember: -1 })
@@ -321,6 +393,7 @@ class App extends React.PureComponent {
               messagePopupError={messagePopupError}
               connectSocketFirstTime={!connectSocketFirstTime}
               conversation={conversation}
+              conversationWithoutState={this.conversation}
               myId={myId}
               registrationMode={myId === -1}
               introductionMode={myId !== -1 && selectedIdMember === -1}
@@ -331,6 +404,8 @@ class App extends React.PureComponent {
               disableSelectedMember={this.disableSelectedMember}
               logout={this.logout}
               loadingMembers={loadingMembers}
+              readMessage={this.readMessage}
+              toScroll={this.toScroll}
             />
 
             <div className="customLink">

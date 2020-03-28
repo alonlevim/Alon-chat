@@ -11,6 +11,9 @@ const chat = (props) => {
         conversation={props.conversation}
         myId={props.myId}
         getMemberSelected={props.getMemberSelected}
+        readMessage={props.readMessage}
+        toScroll={props.toScroll}
+        conversationWithoutState={props.conversationWithoutState}
         />
         <Controller sendMessage={props.sendMessage} />
     </div>

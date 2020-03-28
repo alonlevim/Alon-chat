@@ -143,5 +143,26 @@ module.exports = (io) => {
                 }
             });
         });
+
+        socket.on(events.READ_MESSAGE, async function (data, callback) {
+            console.log(events.READ_MESSAGE);
+            if (
+                data == null
+                ||
+                callback == null
+                ||
+                typeof data.id === "undefined"
+                ||
+                typeof data.from === "undefined"
+                ||
+                typeof data.to === "undefined"
+            )
+                return;
+
+            const { id, from, to } = data;
+            // Update in DB
+            await Conversations.readMessage(id, from, to);
+            callback && callback();
+        });
     });
 };
