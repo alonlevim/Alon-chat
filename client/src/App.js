@@ -248,13 +248,22 @@ class App extends React.PureComponent {
   getMessage = (data) => {
     if (data != null && typeof data.content !== "undefined") {
       const { selectedIdMember } = this.state;
+      
       // When conversation with member
       if (typeof data.from !== "undefined" && data.from === selectedIdMember) {
         const { conversation } = this.state;
         const newConversation = [...conversation];
         newConversation.push(data);
+        this.conversation.push(data);
 
-        this.setState({ conversation: newConversation });
+        // Index if member that sent message
+        const indexFromMember = this.getIndexOfMemberById(data.from);
+        const newMembers = [...this.state.members];
+        // Update conversation list in members list
+        newMembers[indexFromMember].conversation.push(data);
+
+        // Update store
+        this.setState({ conversation: newConversation, members: newMembers });
       }
       // When conversation is not with the member
       else if (typeof data.from !== "undefined") {
@@ -264,6 +273,7 @@ class App extends React.PureComponent {
           const { members } = this.state;
           const newMembers = [...members];
           newMembers[indexMember].conversation.push(data);
+          newMembers[indexMember].unread++;
 
           this.setState({ members: newMembers });
         }
