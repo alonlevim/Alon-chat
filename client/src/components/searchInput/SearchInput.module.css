@@ -2,6 +2,7 @@
     display: flex;
     flex-direction: row;
     justify-content: center;
+    align-items: center;
     border-bottom: 1px solid #D6D6D6;
 }
 .SearchInput > input{
@@ -18,11 +19,18 @@
     background-size: 25px;
 }
 
-.SearchInput .Exit{
-    width: 40px;
-    opacity: 0.7;
+.SearchInput .Logout{
+    width: 60px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    font-size: 12px;
     cursor: pointer;
-    margin-right: 8%;
+    color: rgb(153, 153, 153);
+}
+
+.SearchInput .Logout:hover{
+    color: rgb(114, 114, 114);
 }
 
 .SearchInput .Exit:hover {
